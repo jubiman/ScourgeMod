@@ -63,4 +63,12 @@ public class LevelBase {
 		exp = data.getLong("exp");
 		threshold = data.getLong("threshold");
 	}
+
+	public long getThreshold() {
+		return threshold;
+	}
+
+	public void setThreshold(long threshold) {
+		this.threshold = threshold;
+	}
 }

@@ -1,2 +1,27 @@
+[playerclass]
+empty=Empty
+hunter=Hunter
+assassin=Assassin
+ranger=Ranger
+mage=Mage
+summoner=Summoner
+warlock=Warlock
+tank=Tank
+guardian=Guardian
+warrior=Warrior
+berserker=Berserker
+paladin=Paladin
+
+[itemtooltip]
+scourge_debugmana=Debug mana item
+
+[buffmodifiers]
+maxmana=<mod>% maximum mana
+daggerdamage=<mod>% dagger damage
+
 [buff]
 scourge_vitality=Vitality
+scourge_strength=Strength
+scourge_dexterity=Dexterity
+scourge_intelligence=Intelligence
+scourge_charisma=Charisma

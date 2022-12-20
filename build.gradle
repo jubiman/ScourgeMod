@@ -64,9 +64,10 @@ if (!file(gameDirectory + "/Necesse.jar").exists()) {
 dependencies {
     implementation files(gameDirectory + "/Necesse.jar")
     implementation fileTree(gameDirectory + "/lib/")
-    implementation fileTree("./mods/") // Add all mods located in local mods folder
+    implementation fileTree("./mods/")
+	implementation 'org.jetbrains:annotations:20.1.0'// Add all mods located in local mods folder
 
-    compileOnly "com.jubiman:customplayerlib:1.4"
+    compileOnly "com.jubiman:customplayerlib:1.9"
 }
 
 
