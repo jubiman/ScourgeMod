@@ -1,18 +1,18 @@
 package com.jubiman.scourgemod.player;
 
 import com.jubiman.customplayerlib.CustomPlayerRegistry;
-import com.jubiman.customplayerlib.CustomPlayersTickable;
+import com.jubiman.customplayerlib.CustomPlayersHandlerTickable;
 
-public class ScourgePlayers extends CustomPlayersTickable<ScourgePlayer> {
+public class ScourgePlayersHandler extends CustomPlayersHandlerTickable<ScourgePlayer> {
 	public static final String name = "scourgeplayers";
 	public static final String[] scourgeBuffs = new String[] {"vitality", "strength", "dexterity", "intelligence", "charisma"};
 
-	public ScourgePlayers() {
+	public ScourgePlayersHandler() {
 		super(ScourgePlayer.class, name);
 	}
 
-	public static ScourgePlayers getInstance() {
-		return (ScourgePlayers) CustomPlayerRegistry.get(name);
+	public static ScourgePlayersHandler getInstance() {
+		return (ScourgePlayersHandler) CustomPlayerRegistry.get(name);
 	}
 
 	public static ScourgePlayer getPlayer(long auth) {

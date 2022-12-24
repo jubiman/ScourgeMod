@@ -1,6 +1,6 @@
 package com.jubiman.scourgemod.patch;
 
-import com.jubiman.scourgemod.player.ScourgePlayers;
+import com.jubiman.scourgemod.player.ScourgePlayersHandler;
 import necesse.engine.modLoader.annotations.ModMethodPatch;
 import necesse.engine.tickManager.TickManager;
 import necesse.entity.mobs.PlayerMob;
@@ -15,6 +15,6 @@ public class HudDrawPatch {
 	static void onExit(@Advice.Argument(0) Level level, @Advice.Argument(2) PlayerMob player) {
 		if (level.isClientLevel())
 			if (player.isClientClient())
-				ScourgePlayers.getPlayer(player.getClientClient().authentication).getMana().draw();
+				ScourgePlayersHandler.getPlayer(player.getClientClient().authentication).getMana().draw();
 	}
 }

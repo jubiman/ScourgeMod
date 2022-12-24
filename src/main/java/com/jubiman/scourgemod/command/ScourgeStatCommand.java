@@ -1,7 +1,7 @@
 package com.jubiman.scourgemod.command;
 
 import com.jubiman.scourgemod.player.ScourgePlayer;
-import com.jubiman.scourgemod.player.ScourgePlayers;
+import com.jubiman.scourgemod.player.ScourgePlayersHandler;
 import com.jubiman.scourgemod.player.level.LevelBase;
 import necesse.engine.commands.CmdParameter;
 import necesse.engine.commands.CommandLog;
@@ -21,7 +21,7 @@ public class ScourgeStatCommand extends ModularChatCommand {
 
 	@Override
 	public void runModular(Client client, Server server, ServerClient serverClient, Object[] args, String[] strings, CommandLog commandLog) {
-		ScourgePlayer player = ScourgePlayers.getPlayer(((ServerClient) args[2]).authentication);
+		ScourgePlayer player = ScourgePlayersHandler.getPlayer(((ServerClient) args[2]).authentication);
 		switch (((String) args[0]).toLowerCase()) {
 			case "vit":
 			case "vitality": {

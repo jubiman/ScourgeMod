@@ -2,7 +2,7 @@ package com.jubiman.scourgemod.buff.stat;
 
 import com.jubiman.scourgemod.buff.ScourgePassiveBuff;
 import com.jubiman.scourgemod.player.ScourgePlayer;
-import com.jubiman.scourgemod.player.ScourgePlayers;
+import com.jubiman.scourgemod.player.ScourgePlayersHandler;
 import necesse.entity.mobs.PlayerMob;
 import necesse.entity.mobs.buffs.ActiveBuff;
 import necesse.gfx.gameFont.FontManager;
@@ -25,7 +25,7 @@ public abstract class StatBuff extends ScourgePassiveBuff {
 			if (!playerMob.isClientClient())
 				return;
 
-			ScourgePlayer player = ScourgePlayers.getPlayer(playerMob.getClientClient().authentication);
+			ScourgePlayer player = ScourgePlayersHandler.getPlayer(playerMob.getClientClient().authentication);
 
 			text = Integer.toString(player.getStatFromBuffID(buff.buff.getStringID()));
 			width = FontManager.bit.getWidthCeil(text, durationFontOptions);

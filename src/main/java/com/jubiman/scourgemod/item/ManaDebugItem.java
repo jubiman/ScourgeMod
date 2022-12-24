@@ -1,6 +1,6 @@
 package com.jubiman.scourgemod.item;
 
-import com.jubiman.scourgemod.player.ScourgePlayers;
+import com.jubiman.scourgemod.player.ScourgePlayersHandler;
 import com.jubiman.scourgemod.projectile.DebugManaProjectile;
 import necesse.engine.localization.Localization;
 import necesse.engine.network.PacketReader;
@@ -35,10 +35,10 @@ public class ManaDebugItem extends ProjectileToolItem {
 	public InventoryItem onAttack(Level level, int x, int y, PlayerMob player, int attackHeight, InventoryItem item, PlayerInventorySlot slot, int animAttack, int seed, PacketReader contentReader) {
 		boolean used = false;
 		if (player.isServerClient())
-			used = ScourgePlayers.getPlayer(player.getServerClient().authentication).useMana(10);
+			used = ScourgePlayersHandler.getPlayer(player.getServerClient().authentication).useMana(10);
 
 		else if (player.isClientClient())
-			used = ScourgePlayers.getPlayer(player.getClientClient().authentication).useMana(10);
+			used = ScourgePlayersHandler.getPlayer(player.getClientClient().authentication).useMana(10);
 
 		if (used) {
 			Projectile projectile = new DebugManaProjectile(

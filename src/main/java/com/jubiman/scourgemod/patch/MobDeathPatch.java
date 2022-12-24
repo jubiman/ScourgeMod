@@ -2,7 +2,7 @@ package com.jubiman.scourgemod.patch;
 
 import com.jubiman.scourgemod.mob.ScourgeMob;
 import com.jubiman.scourgemod.player.ScourgePlayer;
-import com.jubiman.scourgemod.player.ScourgePlayers;
+import com.jubiman.scourgemod.player.ScourgePlayersHandler;
 import necesse.engine.modLoader.annotations.ModMethodPatch;
 import necesse.entity.mobs.Attacker;
 import necesse.entity.mobs.Mob;
@@ -27,7 +27,7 @@ public class MobDeathPatch {
 				if (!playerMob.isServerClient())
 					return;
 
-				player = ScourgePlayers.getPlayer(playerMob.getServerClient().authentication);
+				player = ScourgePlayersHandler.getPlayer(playerMob.getServerClient().authentication);
 				int exp = 0;
 				if (mob instanceof ScourgeMob)
 					exp = ((ScourgeMob) mob).getExpGain();

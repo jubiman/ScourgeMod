@@ -15,8 +15,10 @@ import com.jubiman.scourgemod.buff.stat.*;
 import com.jubiman.scourgemod.command.ScourgeClassCommand;
 import com.jubiman.scourgemod.command.ScourgeStatCommand;
 import com.jubiman.scourgemod.item.ManaDebugItem;
+import com.jubiman.scourgemod.item.projectile.arrow.TerminatorArrowProjectile;
+import com.jubiman.scourgemod.item.weapon.bow.Terminator;
 import com.jubiman.scourgemod.network.packet.SyncLevelPacket;
-import com.jubiman.scourgemod.player.ScourgePlayers;
+import com.jubiman.scourgemod.player.ScourgePlayersHandler;
 import com.jubiman.scourgemod.player.mana.Mana;
 import com.jubiman.scourgemod.projectile.DebugManaProjectile;
 import necesse.engine.commands.CommandsManager;
@@ -33,7 +35,7 @@ public class ScourgeMod {
 	}
 
 	public void init() {
-		CustomPlayerRegistry.register(ScourgePlayers.name, new ScourgePlayers());
+		CustomPlayerRegistry.register(ScourgePlayersHandler.name, new ScourgePlayersHandler());
 
 		// Register Stat buffs
 		BuffRegistry.registerBuff("scourge_vitality", new VitalityBuff());
@@ -56,9 +58,11 @@ public class ScourgeMod {
 
 		// Register items
 		ItemRegistry.registerItem("scourge_manadebug", new ManaDebugItem(), 0, false);
+		ItemRegistry.registerItem("scourge_terminator", new Terminator(), 9127, true);
 
 		// Register projectiles
 		ProjectileRegistry.registerProjectile("scourge_manadebugprojectile", DebugManaProjectile.class, "scourge_manadebugprojectile", "scourge_manadebugprojectile_shadow");
+		ProjectileRegistry.registerProjectile("scourge_terminatorarrowprojectile", TerminatorArrowProjectile.class, "scourge_terminatorarrowprojectile", "scourgeterminatorparrowrojectile_shadow");
 
 		// Register packets
 		PacketRegistry.registerPacket(SyncLevelPacket.class);

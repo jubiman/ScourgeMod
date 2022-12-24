@@ -14,6 +14,8 @@ paladin=Paladin
 
 [itemtooltip]
 scourge_debugmana=Debug mana item
+terminator1=Shoots 4 arrows at once
+terminator2=Divides crit chance by 4
 
 [buffmodifiers]
 maxmana=<mod>% maximum mana

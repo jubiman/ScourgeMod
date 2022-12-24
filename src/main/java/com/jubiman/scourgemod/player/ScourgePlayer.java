@@ -72,7 +72,7 @@ public class ScourgePlayer extends CustomPlayerTickable {
 		} catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | InstantiationException |
 				 IllegalAccessException e) {
 			throw new RuntimeException(e);
-		}
+		} catch (IndexOutOfBoundsException ignored) {}
 
 		mana.load(data.getLoadDataByName("mana").get(0));
 
@@ -96,7 +96,7 @@ public class ScourgePlayer extends CustomPlayerTickable {
 	}
 
 	private void playerTick(PlayerMob player) {
-		for (String string_id : ScourgePlayers.scourgeBuffs)
+		for (String string_id : ScourgePlayersHandler.scourgeBuffs)
 			if (!player.buffManager.hasBuff("scourge_" + string_id))
 				player.addBuff(new ActiveBuff("scourge_" + string_id, player, 1000000, null), true);
 		if (playerClass != null && !player.buffManager.hasBuff(playerClass.getBuffStringId()))
