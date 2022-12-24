@@ -12,6 +12,9 @@ warrior=Warrior
 berserker=Berserker
 paladin=Paladin
 
+[item]
+scourge_terminator=Terminator
+
 [itemtooltip]
 scourge_debugmana=Debug mana item
 terminator1=Shoots 4 arrows at once
