@@ -1,7 +1,7 @@
 package com.jubiman.scourgemod.buff;
 
 import com.jubiman.scourgemod.player.ScourgePlayer;
-import com.jubiman.scourgemod.player.ScourgePlayers;
+import com.jubiman.scourgemod.player.ScourgePlayersHandler;
 import necesse.entity.mobs.PlayerMob;
 import necesse.entity.mobs.buffs.ActiveBuff;
 import necesse.entity.mobs.buffs.staticBuffs.Buff;
@@ -34,9 +34,9 @@ public abstract class ScourgePassiveBuff extends Buff {
 		if (buff.owner.isPlayer) {
 			PlayerMob owner = (PlayerMob) buff.owner;
 			if (owner.isClientClient())
-				buffs(buff, ScourgePlayers.getPlayer(owner.getClientClient().authentication));
+				buffs(buff, ScourgePlayersHandler.getPlayer(owner.getClientClient().authentication));
 			else if (owner.isServerClient())
-				buffs(buff, ScourgePlayers.getPlayer(owner.getServerClient().authentication));
+				buffs(buff, ScourgePlayersHandler.getPlayer(owner.getServerClient().authentication));
 		}
 	}
 

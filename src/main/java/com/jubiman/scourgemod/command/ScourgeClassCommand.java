@@ -1,7 +1,7 @@
 package com.jubiman.scourgemod.command;
 
 import com.jubiman.scourgemod.player.ScourgePlayer;
-import com.jubiman.scourgemod.player.ScourgePlayers;
+import com.jubiman.scourgemod.player.ScourgePlayersHandler;
 import com.jubiman.scourgemod.player.playerclass.hunter.AssassinClass;
 import com.jubiman.scourgemod.player.playerclass.hunter.HunterClass;
 import com.jubiman.scourgemod.player.playerclass.hunter.RangerClass;
@@ -32,7 +32,7 @@ public class ScourgeClassCommand extends ModularChatCommand {
 	@Override
 	public void runModular(Client client, Server server, ServerClient serverClient, Object[] args, String[] strings, CommandLog commandLog) {
 		PlayerMob playerMob = ((ServerClient) args[1]).playerMob;
-		ScourgePlayer player = ScourgePlayers.getPlayer(((ServerClient) args[1]).authentication);
+		ScourgePlayer player = ScourgePlayersHandler.getPlayer(((ServerClient) args[1]).authentication);
 		switch ((String) args[0]) {
 			case "set": {
 				switch ((String) args[2]) {

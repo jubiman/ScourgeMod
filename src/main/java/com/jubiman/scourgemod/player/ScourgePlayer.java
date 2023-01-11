@@ -8,8 +8,10 @@ import com.jubiman.scourgemod.player.playerclass.PlayerClass;
 import com.jubiman.scourgemod.player.stat.*;
 import necesse.engine.localization.Localization;
 import necesse.engine.network.client.Client;
+import necesse.engine.network.packet.PacketMobBuffRemove;
 import necesse.engine.network.server.Server;
 import necesse.engine.network.server.ServerClient;
+import necesse.engine.registries.BuffRegistry;
 import necesse.engine.save.LoadData;
 import necesse.engine.save.SaveData;
 import necesse.entity.mobs.PlayerMob;
@@ -40,7 +42,6 @@ public class ScourgePlayer extends CustomPlayerTickable {
 
 		skillPoints = 0;
 		playerLevel = new LevelBase();
-		//playerClass = new EmptyPlayerClass(this);
 	}
 
 	@Override
@@ -96,7 +97,7 @@ public class ScourgePlayer extends CustomPlayerTickable {
 	}
 
 	private void playerTick(PlayerMob player) {
-		for (String string_id : ScourgePlayers.scourgeBuffs)
+		for (String string_id : ScourgePlayersHandler.scourgeBuffs)
 			if (!player.buffManager.hasBuff("scourge_" + string_id))
 				player.addBuff(new ActiveBuff("scourge_" + string_id, player, 1000000, null), true);
 		if (playerClass != null && !player.buffManager.hasBuff(playerClass.getBuffStringId()))
@@ -134,7 +135,7 @@ public class ScourgePlayer extends CustomPlayerTickable {
 	public void setPlayerClass(PlayerClass playerClass, @NotNull PlayerMob player) {
 		if (this.playerClass != null)
 			player.buffManager.removeBuff(this.playerClass.getBuffStringId(), true);
-		//player.getServerClient().sendPacket(new PacketMobBuff(player.getUniqueID(), ));
+		player.getServerClient().sendPacket(new PacketMobBuffRemove(player.getUniqueID(), BuffRegistry.getBuffID(this.playerClass.getBuffStringId())));
 		this.playerClass = playerClass;
 	}
 
@@ -235,7 +236,7 @@ public class ScourgePlayer extends CustomPlayerTickable {
 		return Localization.translate("playerclass", "empty");
 	}
 
-	public int getStatFromBuffID(String stringID) {
+	public int getStatFromBuffID(@NotNull String stringID) {
 		switch (stringID) {
 			case "scourge_vitality": {
 				return getVitality();
@@ -256,7 +257,7 @@ public class ScourgePlayer extends CustomPlayerTickable {
 		return -1; // shouldn't happen
 	}
 
-	public Stat getStatObjectFromBuffID(String stringID) {
+	public Stat getStatObjectFromBuffID(@NotNull String stringID) {
 		switch (stringID) {
 			case "scourge_vitality": {
 				return vitality;

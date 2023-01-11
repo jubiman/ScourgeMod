@@ -9,22 +9,23 @@ import com.jubiman.scourgemod.buff.playerclass.mage.SummonerBuff;
 import com.jubiman.scourgemod.buff.playerclass.mage.WarlockBuff;
 import com.jubiman.scourgemod.buff.playerclass.tank.GuardianBuff;
 import com.jubiman.scourgemod.buff.playerclass.tank.TankBuff;
+import com.jubiman.scourgemod.buff.playerclass.warrior.BerserkerBuff;
 import com.jubiman.scourgemod.buff.playerclass.warrior.PaladinBuff;
 import com.jubiman.scourgemod.buff.playerclass.warrior.WarriorBuff;
 import com.jubiman.scourgemod.buff.stat.*;
 import com.jubiman.scourgemod.command.ScourgeClassCommand;
 import com.jubiman.scourgemod.command.ScourgeStatCommand;
 import com.jubiman.scourgemod.item.ManaDebugItem;
+import com.jubiman.scourgemod.level.maps.biomes.SnowCrystalMinesBiome;
+import com.jubiman.scourgemod.level.world.ScourgeWorldGenerator;
 import com.jubiman.scourgemod.network.packet.SyncLevelPacket;
-import com.jubiman.scourgemod.player.ScourgePlayers;
+import com.jubiman.scourgemod.player.ScourgePlayersHandler;
 import com.jubiman.scourgemod.player.mana.Mana;
 import com.jubiman.scourgemod.projectile.DebugManaProjectile;
 import necesse.engine.commands.CommandsManager;
 import necesse.engine.modLoader.annotations.ModEntry;
-import necesse.engine.registries.BuffRegistry;
-import necesse.engine.registries.ItemRegistry;
-import necesse.engine.registries.PacketRegistry;
-import necesse.engine.registries.ProjectileRegistry;
+import necesse.engine.registries.*;
+import necesse.engine.world.WorldGenerator;
 
 @ModEntry
 public class ScourgeMod {
@@ -33,7 +34,7 @@ public class ScourgeMod {
 	}
 
 	public void init() {
-		CustomPlayerRegistry.register(ScourgePlayers.name, new ScourgePlayers());
+		CustomPlayerRegistry.register(ScourgePlayersHandler.name, new ScourgePlayersHandler());
 
 		// Register Stat buffs
 		BuffRegistry.registerBuff("scourge_vitality", new VitalityBuff());
@@ -52,6 +53,7 @@ public class ScourgeMod {
 		BuffRegistry.registerBuff("scourge_tank", new TankBuff());
 		BuffRegistry.registerBuff("scourge_guardian", new GuardianBuff());
 		BuffRegistry.registerBuff("scourge_warrior", new WarriorBuff());
+		BuffRegistry.registerBuff("scourge_berserker", new BerserkerBuff());
 		BuffRegistry.registerBuff("scourge_paladin", new PaladinBuff());
 
 		// Register items
@@ -62,6 +64,12 @@ public class ScourgeMod {
 
 		// Register packets
 		PacketRegistry.registerPacket(SyncLevelPacket.class);
+
+		// Register biomes
+		BiomeRegistry.registerBiome("snowcrystalmines", new SnowCrystalMinesBiome(), 33, "snow");
+
+		// Register world gen
+		WorldGenerator.registerGenerator(new ScourgeWorldGenerator());
 	}
 
 	public void initResources() {

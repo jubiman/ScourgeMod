@@ -1,7 +1,7 @@
 package com.jubiman.scourgemod.network.packet;
 
 import com.jubiman.scourgemod.player.ScourgePlayer;
-import com.jubiman.scourgemod.player.ScourgePlayers;
+import com.jubiman.scourgemod.player.ScourgePlayersHandler;
 import necesse.engine.network.NetworkPacket;
 import necesse.engine.network.Packet;
 import necesse.engine.network.PacketReader;
@@ -30,7 +30,7 @@ public class SyncLevelPacket extends Packet {
 
 	@Override
 	public void processClient(NetworkPacket packet, Client client) {
-		ScourgePlayers.getPlayer(client.getClient().authentication).getPlayerLevel().setExp(exp);
-		ScourgePlayers.getPlayer(client.getClient().authentication).getPlayerLevel().setThreshold(threshold);
+		ScourgePlayersHandler.getPlayer(client.getClient().authentication).getPlayerLevel().setExp(exp);
+		ScourgePlayersHandler.getPlayer(client.getClient().authentication).getPlayerLevel().setThreshold(threshold);
 	}
 }

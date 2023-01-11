@@ -18,6 +18,7 @@ scourge_debugmana=Debug mana item
 [buffmodifiers]
 maxmana=<mod>% maximum mana
 daggerdamage=<mod>% dagger damage
+lifesteal=<mod>% life steal
 
 [buff]
 scourge_vitality=Vitality
