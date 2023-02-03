@@ -10,7 +10,7 @@ import necesse.level.maps.biomes.Biome;
 public class ScourgeWorldGenerator extends WorldGenerator {
 	@Override
 	public Level getNewLevel(int x, int y, int dim, Server server) {
-		Biome biome = null;
+		/*Biome biome = null;
 		if (server.world.levelManager.isLoaded(x, y, 0)) {
 			biome = (server.world.levelManager.getLevel(x, y, 0)).biome;
 		} else if (server.world.levelExists(x, y, 0)) {
@@ -23,8 +23,9 @@ public class ScourgeWorldGenerator extends WorldGenerator {
 		if (level == null)
 			level = new Level(100, 100, x, y, dim, false, server);
 		level.biome = biome;
-		level.overwriteIslandCoords(x, y, dim);
-		return level;
+		level.overwriteIslandCoords(x, y, dim);*/
+		//return level;
+		return null;
 
 		/*switch (dim) {
 			case 20:

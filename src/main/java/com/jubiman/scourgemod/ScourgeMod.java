@@ -16,7 +16,7 @@ import com.jubiman.scourgemod.buff.stat.*;
 import com.jubiman.scourgemod.command.ScourgeClassCommand;
 import com.jubiman.scourgemod.command.ScourgeStatCommand;
 import com.jubiman.scourgemod.item.ManaDebugItem;
-import com.jubiman.scourgemod.level.maps.biomes.SnowCrystalMinesBiome;
+import com.jubiman.scourgemod.level.maps.biomes.CrystalMines.SnowCrystalMinesBiome;
 import com.jubiman.scourgemod.level.world.ScourgeWorldGenerator;
 import com.jubiman.scourgemod.network.packet.SyncLevelPacket;
 import com.jubiman.scourgemod.player.ScourgePlayersHandler;
@@ -34,7 +34,10 @@ public class ScourgeMod {
 	}
 
 	public void init() {
-		CustomPlayerRegistry.register(ScourgePlayersHandler.name, new ScourgePlayersHandler());
+
+
+		// Register biomes
+		BiomeRegistry.registerBiome("snowcrystalmines", new SnowCrystalMinesBiome(), 33, "snow");
 
 		// Register Stat buffs
 		BuffRegistry.registerBuff("scourge_vitality", new VitalityBuff());
@@ -62,14 +65,13 @@ public class ScourgeMod {
 		// Register projectiles
 		ProjectileRegistry.registerProjectile("scourge_manadebugprojectile", DebugManaProjectile.class, "scourge_manadebugprojectile", "scourge_manadebugprojectile_shadow");
 
+		// Register world gen
+		WorldGenerator.registerGenerator(new ScourgeWorldGenerator());
+
 		// Register packets
 		PacketRegistry.registerPacket(SyncLevelPacket.class);
 
-		// Register biomes
-		BiomeRegistry.registerBiome("snowcrystalmines", new SnowCrystalMinesBiome(), 33, "snow");
-
-		// Register world gen
-		WorldGenerator.registerGenerator(new ScourgeWorldGenerator());
+		CustomPlayerRegistry.register(ScourgePlayersHandler.name, new ScourgePlayersHandler());
 	}
 
 	public void initResources() {

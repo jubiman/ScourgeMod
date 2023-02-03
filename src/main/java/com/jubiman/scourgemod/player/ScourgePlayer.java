@@ -70,6 +70,7 @@ public class ScourgePlayer extends CustomPlayerTickable {
 			LoadData playerClassData = data.getLoadDataByName("playerClass").get(0);
 			playerClass = (PlayerClass) Class.forName("com.jubiman.scourgemod.player.playerclass." + playerClassData.getUnsafeString("playerClassName")).getConstructor(ScourgePlayer.class).newInstance(this);
 			//playerClass.load(playerClassData);
+		} catch (IndexOutOfBoundsException ignored) {
 		} catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | InstantiationException |
 				 IllegalAccessException e) {
 			throw new RuntimeException(e);
@@ -133,9 +134,10 @@ public class ScourgePlayer extends CustomPlayerTickable {
 	}
 
 	public void setPlayerClass(PlayerClass playerClass, @NotNull PlayerMob player) {
-		if (this.playerClass != null)
+		if (this.playerClass != null) {
 			player.buffManager.removeBuff(this.playerClass.getBuffStringId(), true);
-		player.getServerClient().sendPacket(new PacketMobBuffRemove(player.getUniqueID(), BuffRegistry.getBuffID(this.playerClass.getBuffStringId())));
+			player.getServerClient().sendPacket(new PacketMobBuffRemove(player.getUniqueID(), BuffRegistry.getBuffID(this.playerClass.getBuffStringId())));
+		}
 		this.playerClass = playerClass;
 	}
 
