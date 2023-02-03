@@ -17,6 +17,7 @@ import com.jubiman.scourgemod.command.ScourgeClassCommand;
 import com.jubiman.scourgemod.command.ScourgeStatCommand;
 import com.jubiman.scourgemod.item.ManaDebugItem;
 import com.jubiman.scourgemod.level.maps.biomes.CrystalMines.SnowCrystalMinesBiome;
+import com.jubiman.scourgemod.level.maps.biomes.CrystalMines.SnowCrystalMinesCaveLevel;
 import com.jubiman.scourgemod.level.world.ScourgeWorldGenerator;
 import com.jubiman.scourgemod.network.packet.SyncLevelPacket;
 import com.jubiman.scourgemod.player.ScourgePlayersHandler;
@@ -34,7 +35,8 @@ public class ScourgeMod {
 	}
 
 	public void init() {
-
+		// Register levels
+		LevelRegistry.registerLevel("snowcrystalminescave", SnowCrystalMinesCaveLevel.class);
 
 		// Register biomes
 		BiomeRegistry.registerBiome("snowcrystalmines", new SnowCrystalMinesBiome(), 33, "snow");
