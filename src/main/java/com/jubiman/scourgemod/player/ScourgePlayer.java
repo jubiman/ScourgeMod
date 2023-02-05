@@ -74,7 +74,7 @@ public class ScourgePlayer extends CustomPlayerTickable {
 		} catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | InstantiationException |
 				 IllegalAccessException e) {
 			throw new RuntimeException(e);
-		}
+		} catch (IndexOutOfBoundsException ignored) {}
 
 		mana.load(data.getLoadDataByName("mana").get(0));
 

@@ -12,8 +12,13 @@ warrior=Warrior
 berserker=Berserker
 paladin=Paladin
 
+[item]
+scourge_terminator=Terminator
+
 [itemtooltip]
 scourge_debugmana=Debug mana item
+terminator1=Shoots 4 arrows at once
+terminator2=Divides crit chance by 4
 
 [buffmodifiers]
 maxmana=<mod>% maximum mana

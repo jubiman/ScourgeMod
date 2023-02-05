@@ -19,6 +19,8 @@ import com.jubiman.scourgemod.item.ManaDebugItem;
 import com.jubiman.scourgemod.level.maps.biomes.CrystalMines.SnowCrystalMinesBiome;
 import com.jubiman.scourgemod.level.maps.biomes.CrystalMines.SnowCrystalMinesCaveLevel;
 import com.jubiman.scourgemod.level.world.ScourgeWorldGenerator;
+import com.jubiman.scourgemod.item.projectile.arrow.TerminatorArrowProjectile;
+import com.jubiman.scourgemod.item.weapon.bow.Terminator;
 import com.jubiman.scourgemod.network.packet.SyncLevelPacket;
 import com.jubiman.scourgemod.player.ScourgePlayersHandler;
 import com.jubiman.scourgemod.player.mana.Mana;
@@ -63,9 +65,11 @@ public class ScourgeMod {
 
 		// Register items
 		ItemRegistry.registerItem("scourge_manadebug", new ManaDebugItem(), 0, false);
+		ItemRegistry.registerItem("scourge_terminator", new Terminator(), 9127, true);
 
 		// Register projectiles
 		ProjectileRegistry.registerProjectile("scourge_manadebugprojectile", DebugManaProjectile.class, "scourge_manadebugprojectile", "scourge_manadebugprojectile_shadow");
+		ProjectileRegistry.registerProjectile("scourge_terminatorarrowprojectile", TerminatorArrowProjectile.class, "scourge_terminatorarrowprojectile", "scourgeterminatorparrowrojectile_shadow");
 
 		// Register world gen
 		WorldGenerator.registerGenerator(new ScourgeWorldGenerator());
