@@ -1,18 +1,12 @@
 package com.jubiman.scourgemod.network.packet;
 
-import com.jubiman.scourgemod.player.ScourgePlayersHandler;
 import necesse.engine.network.NetworkPacket;
 import necesse.engine.network.Packet;
 import necesse.engine.network.PacketReader;
 import necesse.engine.network.PacketWriter;
 import necesse.engine.network.client.Client;
-import necesse.engine.network.packet.PacketWorldData;
 import necesse.engine.util.GameRandom;
-import necesse.engine.util.LevelIdentifier;
-import necesse.engine.world.WorldEntity;
-import necesse.entity.mobs.Mob;
 import necesse.gfx.gameFont.FontOptions;
-import necesse.level.maps.Level;
 import necesse.level.maps.hudManager.floatText.DmgText;
 
 import java.awt.*;

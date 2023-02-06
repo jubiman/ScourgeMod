@@ -4,16 +4,11 @@ import com.jubiman.scourgemod.modifier.ScourgeBuffModifiers;
 import com.jubiman.scourgemod.network.packet.PacketShowHealingTip;
 import com.jubiman.scourgemod.player.ScourgePlayer;
 import com.jubiman.scourgemod.player.playerclass.warrior.BerserkerClass;
-import necesse.engine.util.GameRandom;
 import necesse.entity.mobs.Mob;
 import necesse.entity.mobs.MobBeforeHitEvent;
 import necesse.entity.mobs.PlayerMob;
 import necesse.entity.mobs.buffs.ActiveBuff;
 import necesse.entity.mobs.gameDamageType.MeleeDamageType;
-import necesse.gfx.gameFont.FontOptions;
-import necesse.level.maps.hudManager.floatText.DmgText;
-
-import java.awt.*;
 
 public class BerserkerBuff extends WarriorBuff {
 	@Override

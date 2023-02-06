@@ -3,7 +3,6 @@ package com.jubiman.scourgemod.level.maps.biomes.CrystalMines;
 import necesse.engine.GameEvents;
 import necesse.engine.events.worldGeneration.GenerateCaveLayoutEvent;
 import necesse.engine.events.worldGeneration.GeneratedCaveLayoutEvent;
-import necesse.engine.network.server.Server;
 import necesse.engine.util.LevelIdentifier;
 import necesse.engine.world.WorldEntity;
 import necesse.level.maps.Level;

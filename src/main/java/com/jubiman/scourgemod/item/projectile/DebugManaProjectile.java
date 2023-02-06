@@ -1,4 +1,4 @@
-package com.jubiman.scourgemod.projectile;
+package com.jubiman.scourgemod.item.projectile;
 
 import necesse.engine.tickManager.TickManager;
 import necesse.entity.mobs.GameDamage;

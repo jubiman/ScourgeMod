@@ -1,7 +1,7 @@
 package com.jubiman.scourgemod.item;
 
+import com.jubiman.scourgemod.item.projectile.DebugManaProjectile;
 import com.jubiman.scourgemod.player.ScourgePlayersHandler;
-import com.jubiman.scourgemod.projectile.DebugManaProjectile;
 import necesse.engine.localization.Localization;
 import necesse.engine.network.PacketReader;
 import necesse.engine.network.packet.PacketSpawnProjectile;
