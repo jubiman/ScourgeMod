@@ -1,7 +1,7 @@
 package com.jubiman.scourgemod.player;
 
 import com.jubiman.customplayerlib.CustomPlayerTickable;
-import com.jubiman.scourgemod.network.packet.SyncLevelPacket;
+import com.jubiman.scourgemod.network.packet.PacketSyncLevel;
 import com.jubiman.scourgemod.player.level.LevelBase;
 import com.jubiman.scourgemod.player.mana.Mana;
 import com.jubiman.scourgemod.player.playerclass.PlayerClass;
@@ -74,7 +74,7 @@ public class ScourgePlayer extends CustomPlayerTickable {
 		} catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | InstantiationException |
 				 IllegalAccessException e) {
 			throw new RuntimeException(e);
-		} catch (IndexOutOfBoundsException ignored) {}
+		}
 
 		mana.load(data.getLoadDataByName("mana").get(0));
 
@@ -218,13 +218,13 @@ public class ScourgePlayer extends CustomPlayerTickable {
 
 	public boolean addExp(int exp, @NotNull ServerClient serverClient) {
 		boolean upped = playerLevel.addExp(exp);
-		serverClient.sendPacket(new SyncLevelPacket(this));
+		serverClient.sendPacket(new PacketSyncLevel(this));
 		return upped;
 	}
 
 	public boolean addExp(int exp, @NotNull Server server) {
 		boolean upped = playerLevel.addExp(exp);
-		server.network.sendToAllClients(new SyncLevelPacket(this));
+		server.network.sendToAllClients(new PacketSyncLevel(this));
 		return upped;
 	}
 

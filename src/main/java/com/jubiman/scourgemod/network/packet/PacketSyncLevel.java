@@ -8,18 +8,18 @@ import necesse.engine.network.PacketReader;
 import necesse.engine.network.PacketWriter;
 import necesse.engine.network.client.Client;
 
-public class SyncLevelPacket extends Packet {
+public class PacketSyncLevel extends Packet {
 	public final long exp;
 	public final long threshold;
 
-	public SyncLevelPacket(byte[] data) {
+	public PacketSyncLevel(byte[] data) {
 		super(data);
 		PacketReader reader = new PacketReader(this);
 		this.exp = reader.getNextLong();
 		this.threshold = reader.getNextLong();
 	}
 
-	public SyncLevelPacket(ScourgePlayer player) {
+	public PacketSyncLevel(ScourgePlayer player) {
 		this.exp = player.getPlayerLevel().getExp();
 		this.threshold = player.getPlayerLevel().getThreshold();
 

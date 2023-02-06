@@ -21,7 +21,8 @@ import com.jubiman.scourgemod.level.maps.biomes.CrystalMines.SnowCrystalMinesCav
 import com.jubiman.scourgemod.level.world.ScourgeWorldGenerator;
 import com.jubiman.scourgemod.item.projectile.arrow.TerminatorArrowProjectile;
 import com.jubiman.scourgemod.item.weapon.bow.Terminator;
-import com.jubiman.scourgemod.network.packet.SyncLevelPacket;
+import com.jubiman.scourgemod.network.packet.PacketShowHealingTip;
+import com.jubiman.scourgemod.network.packet.PacketSyncLevel;
 import com.jubiman.scourgemod.player.ScourgePlayersHandler;
 import com.jubiman.scourgemod.player.mana.Mana;
 import com.jubiman.scourgemod.projectile.DebugManaProjectile;
@@ -75,7 +76,8 @@ public class ScourgeMod {
 		WorldGenerator.registerGenerator(new ScourgeWorldGenerator());
 
 		// Register packets
-		PacketRegistry.registerPacket(SyncLevelPacket.class);
+		PacketRegistry.registerPacket(PacketSyncLevel.class);
+		PacketRegistry.registerPacket(PacketShowHealingTip.class);
 
 		CustomPlayerRegistry.register(ScourgePlayersHandler.name, new ScourgePlayersHandler());
 	}
