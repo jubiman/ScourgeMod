@@ -98,9 +98,10 @@ public class ScourgePlayer extends CustomPlayerTickable {
 	}
 
 	private void playerTick(PlayerMob player) {
-		for (String string_id : ScourgePlayersHandler.scourgeBuffs)
-			if (!player.buffManager.hasBuff("scourge_" + string_id))
-				player.addBuff(new ActiveBuff("scourge_" + string_id, player, 1000000, null), true);
+		if (player.getLevel() != null)
+			for (String string_id : ScourgePlayersHandler.scourgeBuffs)
+				if (!player.buffManager.hasBuff("scourge_" + string_id))
+					player.addBuff(new ActiveBuff("scourge_" + string_id, player, 1000000, null), true);
 		if (playerClass != null && !player.buffManager.hasBuff(playerClass.getBuffStringId()))
 			player.addBuff(new ActiveBuff(playerClass.getBuffStringId(), player, 1000000, null), true);
 	}
