@@ -22,6 +22,8 @@ import com.jubiman.scourgemod.item.weapon.bow.Terminator;
 import com.jubiman.scourgemod.level.maps.biomes.CrystalMines.SnowCrystalMinesBiome;
 import com.jubiman.scourgemod.level.maps.biomes.CrystalMines.SnowCrystalMinesCaveLevel;
 import com.jubiman.scourgemod.level.world.ScourgeWorldGenerator;
+import com.jubiman.scourgemod.mob.human.ClassSelectorHumanMob;
+import com.jubiman.scourgemod.mob.settler.ClassSelectorSettler;
 import com.jubiman.scourgemod.network.packet.PacketShowHealingTip;
 import com.jubiman.scourgemod.network.packet.PacketSyncLevel;
 import com.jubiman.scourgemod.player.ScourgePlayersHandler;
@@ -68,9 +70,15 @@ public class ScourgeMod {
 		ItemRegistry.registerItem("scourge_manadebug", new ManaDebugItem(), 0, false);
 		ItemRegistry.registerItem("scourge_terminator", new Terminator(), 9127, true);
 
+		// Register mobs
+		MobRegistry.registerMob("classselectorhuman", ClassSelectorHumanMob.class, true);
+
 		// Register projectiles
 		ProjectileRegistry.registerProjectile("scourge_manadebugprojectile", DebugManaProjectile.class, "scourge_manadebugprojectile", "scourge_manadebugprojectile_shadow");
 		ProjectileRegistry.registerProjectile("scourge_terminatorarrowprojectile", TerminatorArrowProjectile.class, "scourge_terminatorarrowprojectile", "scourgeterminatorparrowrojectile_shadow");
+
+		// Register settlers
+		SettlerRegistry.registerSettler("classselector", new ClassSelectorSettler());
 
 		// Register world gen
 		WorldGenerator.registerGenerator(new ScourgeWorldGenerator());
@@ -79,6 +87,7 @@ public class ScourgeMod {
 		PacketRegistry.registerPacket(PacketSyncLevel.class);
 		PacketRegistry.registerPacket(PacketShowHealingTip.class);
 
+		// Other
 		CustomPlayerRegistry.register(ScourgePlayersHandler.name, new ScourgePlayersHandler());
 	}
 
