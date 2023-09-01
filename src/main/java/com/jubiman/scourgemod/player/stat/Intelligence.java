@@ -1,5 +1,7 @@
 package com.jubiman.scourgemod.player.stat;
 
+import com.jubiman.scourgemod.item.gemstone.GemstoneQuality;
+
 public class Intelligence extends Stat {
 	public Intelligence() {
 		super();
@@ -9,15 +11,29 @@ public class Intelligence extends Stat {
 		super(level);
 	}
 
+	@Override
+	public void addGemstoneBoost(GemstoneQuality gemstoneQuality) {
+		this.boost += gemstoneQuality.intelligence;
+	}
+
+	@Override
+	public void removeGemstoneBoost(GemstoneQuality gemstoneQuality) {
+		this.boost -= gemstoneQuality.intelligence;
+	}
+
 	public float getIntelligenceMDBoost() {
-		return (float) (0.007 * level * (level - 1));
+		return 0.007f * getTotalLevel() * (getTotalLevel() - 1);
 	}
 
 	public float getIntelligenceMASBoost() {
-		return (float) (0.002 * level * (level - 1));
+		return 0.0002f * getTotalLevel() * (getTotalLevel() - 1);
 	}
 
 	public int getIntelligenceMSBoost() {
-		return (int) (0.2 * level); // +1 max summon per 5 lvls
+		return (int) (0.2 * getTotalLevel()); // +1 max summon per 5 lvls
+	}
+
+	public float getIntelligenceMMBoost() {
+		return 0.5f * getTotalLevel() * (getTotalLevel() - 1);
 	}
 }

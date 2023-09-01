@@ -13,7 +13,7 @@ public class TankBuff extends ScourgePassiveBuff {
 		buff.setModifier(BuffModifiers.ALL_DAMAGE, tankClass.getOtherDamageTypesDebuff());
 		buff.setModifier(BuffModifiers.MAX_HEALTH, tankClass.getMaxHealthBuff());
 		buff.setModifier(BuffModifiers.ARMOR, tankClass.getArmorBuff());
-		buff.setModifier(BuffModifiers.KNOCKBACK_INCOMING, tankClass.getKBIncBuff());
+		buff.setModifier(BuffModifiers.KNOCKBACK_INCOMING_MOD, tankClass.getKBIncBuff());
 		buff.setModifier(BuffModifiers.SPEED, tankClass.getMovementSpeedDebuff());
 	}
 }

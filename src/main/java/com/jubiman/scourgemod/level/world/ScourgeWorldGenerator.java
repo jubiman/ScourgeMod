@@ -25,7 +25,7 @@ public class ScourgeWorldGenerator extends WorldGenerator {
 		 */
 			Level level = biome.getNewLevel(x, y, dim, server, server.world.worldEntity);
 			if (level == null)
-				level = new Level(new LevelIdentifier(x, y, dim), 100, 100, server);
+				level = new Level(new LevelIdentifier(x, y, dim), 100, 100, server.world.worldEntity);
 			level.biome = biome;
 			return level;
 		}

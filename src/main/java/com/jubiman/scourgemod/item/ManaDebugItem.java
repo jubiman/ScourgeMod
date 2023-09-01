@@ -1,5 +1,6 @@
 package com.jubiman.scourgemod.item;
 
+import com.jubiman.scourgemod.item.magic.PercentMagicProjectileToolItem;
 import com.jubiman.scourgemod.item.projectile.DebugManaProjectile;
 import com.jubiman.scourgemod.player.ScourgePlayersHandler;
 import necesse.engine.localization.Localization;
@@ -14,9 +15,10 @@ import necesse.gfx.gameTooltips.ListGameTooltips;
 import necesse.inventory.InventoryItem;
 import necesse.inventory.PlayerInventorySlot;
 import necesse.inventory.item.toolItem.projectileToolItem.ProjectileToolItem;
+import necesse.inventory.item.toolItem.projectileToolItem.magicProjectileToolItem.MagicProjectileToolItem;
 import necesse.level.maps.Level;
 
-public class ManaDebugItem extends ProjectileToolItem {
+public class ManaDebugItem extends PercentMagicProjectileToolItem {
 	public ManaDebugItem() {
 		super(400);
 		//super(Rarity.UNIQUE, 300, 20, 120, 100, 400);
@@ -29,40 +31,54 @@ public class ManaDebugItem extends ProjectileToolItem {
 
 		this.attackXOffset = 12;
 		this.attackYOffset = 22;
+
+		this.manaCost = 10;
 	}
 
 	@Override
 	public InventoryItem onAttack(Level level, int x, int y, PlayerMob player, int attackHeight, InventoryItem item, PlayerInventorySlot slot, int animAttack, int seed, PacketReader contentReader) {
-		boolean used = false;
-		if (player.isServerClient())
-			used = ScourgePlayersHandler.getPlayer(player.getServerClient().authentication).useMana(10);
+//		boolean used = false;
+//		if (player.isServerClient()) {
+//			//player.useMana(10, player.getServerClient());
+//		}
+//			//used = ScourgePlayersHandler.getPlayer(player.getServerClient().authentication).useMana(10);
+//
+//		else if (player.isClientClient())
+//			used = ScourgePlayersHandler.getPlayer(player.getClientClient().authentication).useMana(10);
 
-		else if (player.isClientClient())
-			used = ScourgePlayersHandler.getPlayer(player.getClientClient().authentication).useMana(10);
 
-		if (used) {
-			Projectile projectile = new DebugManaProjectile(
-					level, player, // Level and owner
-					player.x, player.y, // Start position of projectile
-					x, y, // Target position of projectile
-					getVelocity(item, player), // Will add player buffs, enchantments etc
-					getAttackRange(item), // Will add player buffs, enchantments etc
-					getDamage(item), // Will add player buffs, enchantments etc
-					getKnockback(item, player) // Will add player buffs, enchantments etc
-			);
+		Projectile projectile = new DebugManaProjectile(
+				level, player, // Level and owner
+				player.x, player.y, // Start position of projectile
+				x, y, // Target position of projectile
+				getVelocity(item, player), // Will add player buffs, enchantments etc
+				getAttackRange(item), // Will add player buffs, enchantments etc
+				getDamage(item), // Will add player buffs, enchantments etc
+				getKnockback(item, player) // Will add player buffs, enchantments etc
+		);
 
-			GameRandom random = new GameRandom(seed);
-			projectile.resetUniqueID(random);
+		GameRandom random = new GameRandom(seed);
+		projectile.resetUniqueID(random);
 
-			projectile.moveDist(40);
+		projectile.moveDist(40);
 
-			level.entityManager.projectiles.addHidden(projectile);
+		level.entityManager.projectiles.addHidden(projectile);
 
-			if (level.isServerLevel()) {
-				level.getServer().network.sendToClientsAtExcept(new PacketSpawnProjectile(projectile), player.getServerClient(), player.getServerClient());
-			}
+		if (level.isServerLevel()) {
+			level.getServer().network.sendToClientsAtExcept(new PacketSpawnProjectile(projectile), player.getServerClient(), player.getServerClient());
 		}
+
+		//consumeMana(player, item);
+		consumePercentMana(player, item);
 		return item;
+	}
+
+	private void consumePercentMana(PlayerMob player, InventoryItem item) {
+		float percentCost = this.getManaCost(item) / 100;
+		float manaCost = player.getMaxMana() * Math.abs(percentCost);
+		if (manaCost > 0.0F) {
+			player.useMana(manaCost, player.isServerClient() ? player.getServerClient() : null);
+		}
 	}
 
 	@Override

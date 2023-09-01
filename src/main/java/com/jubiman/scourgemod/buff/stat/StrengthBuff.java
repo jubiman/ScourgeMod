@@ -11,6 +11,6 @@ public class StrengthBuff extends StatBuff {
 		Strength strength = player.getStrengthObject();
 		buff.setModifier(BuffModifiers.ARMOR_PEN_FLAT, strength.getStrengthAPBoost());
 		buff.setModifier(BuffModifiers.MELEE_DAMAGE, strength.getStrengthDMGBoost());
-		buff.setModifier(BuffModifiers.KNOCKBACK_INCOMING, strength.getStrengthKBRBoost());
+		buff.setModifier(BuffModifiers.KNOCKBACK_INCOMING_MOD, strength.getStrengthKBRBoost());
 	}
 }

@@ -12,6 +12,6 @@ public class WarlockBuff extends MageBuff {
 		super.buffs(buff, player);
 		WarlockClass warlockClass = (WarlockClass) player.getPlayerClass();
 		buff.setModifier(BuffModifiers.SUMMON_DAMAGE, 0f);
-		buff.setModifier(ScourgeBuffModifiers.MAX_MANA, warlockClass.getMaxManaBuff());
+		buff.setModifier(BuffModifiers.MAX_MANA, warlockClass.getMaxManaBuff());
 	}
 }

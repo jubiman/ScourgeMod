@@ -23,7 +23,7 @@ public class MageClass extends PlayerClass {
 	}
 
 	public float getAttackSpeedBuff() {
-		return (float) (0.003 * getLevel() * (getLevel() - 1));
+		return (float) (0.0003 * getLevel() * (getLevel() - 1));
 	}
 
 	public float getSummonsSpeedBuff() {
@@ -34,7 +34,15 @@ public class MageClass extends PlayerClass {
 		return (float) (0.0007 * getLevel() * (getLevel() - 1));
 	}
 
+	/**
+	 * Returns the mana regen buff in percent
+	 * @return the mana regen buff in percent
+	 */
 	public float getMaxManaBuff() {
-		return (float) (0.0033 * getLevel() * (getLevel() - 1));
+		return (float) (0.033 * getLevel() * (getLevel() - 1));
+	}
+
+	public float getManaRegenBuff() {
+		return (float) (0.0007 * getLevel() * (getLevel() - 1));
 	}
 }

@@ -12,5 +12,7 @@ public class SummonerBuff extends MageBuff {
 		SummonerClass summonerClass = (SummonerClass) player.getPlayerClass();
 		buff.setModifier(BuffModifiers.MAX_SUMMONS, summonerClass.getMaxSummonsBuff());
 		buff.setModifier(BuffModifiers.SUMMON_DAMAGE, summonerClass.getSummonDamageBuff());
+
+		buff.setModifier(BuffModifiers.MAX_MANA, summonerClass.getMaxManaBuff());
 	}
 }

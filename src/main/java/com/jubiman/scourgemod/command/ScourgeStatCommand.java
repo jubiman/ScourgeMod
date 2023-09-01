@@ -13,6 +13,7 @@ import necesse.engine.commands.parameterHandlers.StringParameterHandler;
 import necesse.engine.network.client.Client;
 import necesse.engine.network.server.Server;
 import necesse.engine.network.server.ServerClient;
+import necesse.gfx.GameColor;
 
 public class ScourgeStatCommand extends ModularChatCommand {
 	public ScourgeStatCommand() {
@@ -22,6 +23,10 @@ public class ScourgeStatCommand extends ModularChatCommand {
 	@Override
 	public void runModular(Client client, Server server, ServerClient serverClient, Object[] args, String[] strings, CommandLog commandLog) {
 		ScourgePlayer player = ScourgePlayersHandler.getPlayer(((ServerClient) args[2]).authentication);
+		if (player == null) {
+			commandLog.add(GameColor.RED + "Player not found");
+			return;
+		}
 		switch (((String) args[0]).toLowerCase()) {
 			case "vit":
 			case "vitality": {

@@ -12,16 +12,55 @@ warrior=Warrior
 berserker=Berserker
 paladin=Paladin
 
+[object]
+scourge_grindstone=Grindstone
+
 [item]
+scourge_unrefined_topaz_gemstone=Unrefined Topaz Gemstone
+scourge_rough_topaz_gemstone=Rough Topaz Gemstone
+scourge_flawed_topaz_gemstone=Flawed Topaz Gemstone
+scourge_fine_topaz_gemstone=Fine Topaz Gemstone
+scourge_flawless_topaz_gemstone=Flawless Topaz Gemstone
+scourge_perfect_topaz_gemstone=Perfect Topaz Gemstone
+scourge_unrefined_ruby_gemstone=Unrefined Ruby Gemstone
+scourge_rough_ruby_gemstone=Rough Ruby Gemstone
+scourge_flawed_ruby_gemstone=Flawed Ruby Gemstone
+scourge_fine_ruby_gemstone=Fine Ruby Gemstone
+scourge_flawless_ruby_gemstone=Flawless Ruby Gemstone
+scourge_perfect_ruby_gemstone=Perfect Ruby Gemstone
+scourge_unrefined_sapphire_gemstone=Unrefined Sapphire Gemstone
+scourge_rough_sapphire_gemstone=Rough Sapphire Gemstone
+scourge_flawed_sapphire_gemstone=Flawed Sapphire Gemstone
+scourge_fine_sapphire_gemstone=Fine Sapphire Gemstone
+scourge_flawless_sapphire_gemstone=Flawless Sapphire Gemstone
+scourge_perfect_sapphire_gemstone=Perfect Sapphire Gemstone
+scourge_unrefined_emerald_gemstone=Unrefined Emerald Gemstone
+scourge_rough_emerald_gemstone=Rough Emerald Gemstone
+scourge_flawed_emerald_gemstone=Flawed Emerald Gemstone
+scourge_fine_emerald_gemstone=Fine Emerald Gemstone
+scourge_flawless_emerald_gemstone=Flawless Emerald Gemstone
+scourge_perfect_emerald_gemstone=Perfect Emerald Gemstone
+scourge_unrefined_jade_gemstone=Unrefined Jade Gemstone
+scourge_rough_jade_gemstone=Rough Jade Gemstone
+scourge_flawed_jade_gemstone=Flawed Jade Gemstone
+scourge_fine_jade_gemstone=Fine Jade Gemstone
+scourge_flawless_jade_gemstone=Flawless Jade Gemstone
+scourge_perfect_jade_gemstone=Perfect Jade Gemstone
 scourge_terminator=Terminator
+scourge_grindstone=Grindstone
 
 [itemtooltip]
+gemstoneslot_combat=Combat slot
+gemstoneslot_physical=Physical slot
+gemstoneslot_magic=Magic slot
+gemstoneslot_defense=Defense slot
+gemstoneslot_charisma=Charisma slot
+manapercentcosttip=<value>% of maximum mana
 scourge_debugmana=Debug mana item
 terminator1=Shoots 4 arrows at once
 terminator2=Divides crit chance by 4
 
 [buffmodifiers]
-maxmana=<mod>% maximum mana
 daggerdamage=<mod>% dagger damage
 lifesteal=<mod>% life steal
 

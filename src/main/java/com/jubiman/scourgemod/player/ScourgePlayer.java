@@ -1,11 +1,16 @@
 package com.jubiman.scourgemod.player;
 
-import com.jubiman.customplayerlib.CustomPlayerTickable;
+import com.jubiman.customdatalib.api.ClientTickable;
+import com.jubiman.customdatalib.api.Savable;
+import com.jubiman.customdatalib.player.CustomPlayer;
+import com.jubiman.scourgemod.item.gemstone.GemstoneQuality;
 import com.jubiman.scourgemod.network.packet.PacketSyncLevel;
 import com.jubiman.scourgemod.player.level.LevelBase;
 import com.jubiman.scourgemod.player.mana.Mana;
 import com.jubiman.scourgemod.player.playerclass.PlayerClass;
+import com.jubiman.scourgemod.player.playerclass.mage.MageClass;
 import com.jubiman.scourgemod.player.stat.*;
+import necesse.engine.GameLog;
 import necesse.engine.localization.Localization;
 import necesse.engine.network.client.Client;
 import necesse.engine.network.packet.PacketMobBuffRemove;
@@ -19,9 +24,11 @@ import necesse.entity.mobs.buffs.ActiveBuff;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.time.chrono.ChronoLocalDate;
+import java.util.function.Consumer;
 
-public class ScourgePlayer extends CustomPlayerTickable {
-	private final Mana mana;
+public class ScourgePlayer extends CustomPlayer implements Savable {
 	private PlayerClass playerClass;
 	private Strength strength;
 	private Dexterity dexterity;
@@ -33,7 +40,7 @@ public class ScourgePlayer extends CustomPlayerTickable {
 
 	public ScourgePlayer(long auth) {
 		super(auth);
-		mana = new Mana();
+		//mana = new Mana();
 		strength = new Strength();
 		dexterity = new Dexterity();
 		intelligence = new Intelligence();
@@ -46,20 +53,20 @@ public class ScourgePlayer extends CustomPlayerTickable {
 
 	@Override
 	public void addSaveData(@NotNull SaveData save) {
-		SaveData player = generatePlayerSave();
-		playerLevel.save("playerLevel", player);
+		playerLevel.save("playerLevel", save);
 		if (playerClass != null)
-			playerClass.save(player);
-		mana.save(player);
+			playerClass.save(save);
+		//mana.save(save);
 
-		player.addInt("str", getStrength());
-		player.addInt("dex", getDexterity());
-		player.addInt("int", getIntelligence());
-		player.addInt("vit", getVitality());
-		player.addInt("cha", getCharisma());
 
-		player.addInt("sp", skillPoints);
-		save.addSaveData(player);
+
+		save.addInt("str", getStrength());
+		save.addInt("dex", getDexterity());
+		save.addInt("int", getIntelligence());
+		save.addInt("vit", getVitality());
+		save.addInt("cha", getCharisma());
+
+		save.addInt("sp", skillPoints);
 	}
 
 	@Override
@@ -76,7 +83,7 @@ public class ScourgePlayer extends CustomPlayerTickable {
 			throw new RuntimeException(e);
 		}
 
-		mana.load(data.getLoadDataByName("mana").get(0));
+		//mana.load(data.getLoadDataByName("mana").get(0));
 
 		strength = new Strength(data.getInt("str"));
 		dexterity = new Dexterity(data.getInt("dex"));
@@ -93,24 +100,36 @@ public class ScourgePlayer extends CustomPlayerTickable {
 
 	@Override
 	public void serverTick(@NotNull Server server) {
-		playerTick(server.getPlayerByAuth(auth));
-		mana.serverTick(server, this);
-	}
-
-	private void playerTick(PlayerMob player) {
+		PlayerMob player = server.getPlayerByAuth(auth);
 		if (player.getLevel() != null)
 			for (String string_id : ScourgePlayersHandler.scourgeBuffs)
 				if (!player.buffManager.hasBuff("scourge_" + string_id))
 					player.addBuff(new ActiveBuff("scourge_" + string_id, player, 1000000, null), true);
+
 		if (playerClass != null && !player.buffManager.hasBuff(playerClass.getBuffStringId()))
 			player.addBuff(new ActiveBuff(playerClass.getBuffStringId(), player, 1000000, null), true);
+
+		// If player is a mage, regenerate 1% missing mana every second
+		if (server.tickManager().isFirstGameTickInSecond() && playerClass != null && playerClass instanceof MageClass) {
+			double ln = Math.log(this.getPlayerLevel().getLevel() + 1);
+			float missingManaPercent = (int) (1 + .1f * ln * ln); // goes to 100% at e^(3 sqrt(110)) which is a number with 14 digits, realistically doesn't go much higher than 2-3%
+			float currentMana = player.getMana();
+			float maxMana = player.getMaxMana();
+			player.setMana(currentMana + (maxMana - currentMana) * (missingManaPercent / 100));
+		}
 	}
 
-	@Override
-	public void clientTick(@NotNull Client client) {
-		playerTick(client.getPlayerByAuth(auth));
-		mana.clientTick(client, this);
-	}
+//	@Override
+//	public void clientTick(@NotNull Client client) {
+//		float currentMana = client.getPlayer().getMana();
+//		float maxMana = client.getPlayer().getMaxMana();
+//		float missingManaPercent = 1 - (currentMana / maxMana); // 0.0 - 1.0
+//
+//		client.getPlayer().setMana(currentMana + maxMana * missingManaPercent);
+//
+//		//playerTick(client.getPlayerByAuth(auth));
+//		//mana.clientTick(client, this);
+//	}
 
 	public void resetStats() {
 		skillPoints += getStrength() + getDexterity() + getIntelligence() + getVitality() + getCharisma() - 5;
@@ -122,13 +141,13 @@ public class ScourgePlayer extends CustomPlayerTickable {
 		charisma.reset();
 	}
 
-	public Mana getMana() {
+	/*public Mana getMana() {
 		return mana;
 	}
 
 	public int getMaxMana() {
 		return mana.getMaxMana();
-	}
+	}*/
 
 	public PlayerClass getPlayerClass() {
 		return playerClass;
@@ -143,7 +162,7 @@ public class ScourgePlayer extends CustomPlayerTickable {
 	}
 
 	public int getStrength() {
-		return strength.getLevel();
+		return strength.getTotalLevel();
 	}
 	public Strength getStrengthObject() {
 		return strength;
@@ -154,7 +173,7 @@ public class ScourgePlayer extends CustomPlayerTickable {
 	}
 
 	public int getDexterity() {
-		return dexterity.getLevel();
+		return dexterity.getTotalLevel();
 	}
 	public Dexterity getDexterityObject() {
 		return dexterity;
@@ -165,7 +184,7 @@ public class ScourgePlayer extends CustomPlayerTickable {
 	}
 
 	public int getIntelligence() {
-		return intelligence.getLevel();
+		return intelligence.getTotalLevel();
 	}
 	public Intelligence getIntelligenceObject() {
 		return intelligence;
@@ -176,7 +195,7 @@ public class ScourgePlayer extends CustomPlayerTickable {
 	}
 
 	public int getVitality() {
-		return vitality.getLevel();
+		return vitality.getTotalLevel();
 	}
 	public Vitality getVitalityObject() {
 		return vitality;
@@ -187,7 +206,7 @@ public class ScourgePlayer extends CustomPlayerTickable {
 	}
 
 	public int getCharisma() {
-		return charisma.getLevel();
+		return charisma.getTotalLevel();
 	}
 	public Charisma getCharismaObject() {
 		return charisma;
@@ -209,9 +228,9 @@ public class ScourgePlayer extends CustomPlayerTickable {
 		return playerLevel;
 	}
 
-	public boolean useMana(int mana) { // TODO: maybe display message/sound of no mana
+	/*public boolean useMana(int mana) { // TODO: maybe display message/sound of no mana
 		return this.mana.useMana(mana);
-	}
+	}*/
 
 	public boolean addExp(int exp) {
 		return playerLevel.addExp(exp);
@@ -279,5 +298,64 @@ public class ScourgePlayer extends CustomPlayerTickable {
 			}
 		}
 		return null; // shouldn't happen
+	}
+
+	public void addGemstoneBoost(String gemstoneType) {
+		try {
+			doGemstoneAction(gemstoneType, Stat.class.getMethod("addGemstoneBoost", GemstoneQuality.class));
+		} catch (NoSuchMethodException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private void doGemstoneAction(String gemstoneType, Method method) {
+		// TODO: maybe change the way gemstones work with a quality field/GND field
+		try {
+			switch (gemstoneType) {
+				case "scourge_rough_topaz_gemstone": {
+					method.invoke(charisma, GemstoneQuality.ROUGH);
+					break;
+				}
+				case "scourge_flawed_topaz_gemstone": {
+					method.invoke(charisma, GemstoneQuality.FLAWED);
+					break;
+				}
+				case "scourge_fine_topaz_gemstone": {
+					method.invoke(charisma, GemstoneQuality.FINE);
+					break;
+				}
+				case "scourge_flawless_topaz_gemstone": {
+					method.invoke(charisma, GemstoneQuality.FLAWLESS);
+					break;
+				}
+				case "scourge_perfect_topaz_gemstone": {
+					method.invoke(charisma, GemstoneQuality.PERFECT);
+					break;
+				}
+				case "charisma": {
+					//charisma.addGemstoneBoost();
+					break;
+				}
+			}
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void removeGemstoneBoost(String gemstoneType) {
+		try {
+			doGemstoneAction(gemstoneType, Stat.class.getMethod("removeGemstoneBoost", GemstoneQuality.class));
+		} catch (NoSuchMethodException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void onDeath() {
+		// Remove all gemstone boosts
+		strength.resetBoost();
+		dexterity.resetBoost();
+		intelligence.resetBoost();
+		vitality.resetBoost();
+		charisma.resetBoost();
 	}
 }
