@@ -1,6 +1,6 @@
 package com.jubiman.scourgemod.item.projectile.arrow;
 
-import necesse.engine.tickManager.TickManager;
+import necesse.engine.gameLoop.tickManager.TickManager;
 import necesse.entity.mobs.GameDamage;
 import necesse.entity.mobs.Mob;
 import necesse.entity.mobs.PlayerMob;
@@ -22,7 +22,8 @@ public class TerminatorArrowProjectile extends Projectile {
 	public TerminatorArrowProjectile() {
 	}
 
-	public TerminatorArrowProjectile(Mob owner, float x, float y, float targetX, float targetY, float speed, int distance, GameDamage damage, int knockback) {
+	public TerminatorArrowProjectile(Level level, Mob owner, float x, float y, float targetX, float targetY, float speed, int distance, GameDamage damage, int knockback) {
+		this.setLevel(level);
 		this.setOwner(owner);
 		this.x = x;
 		this.y = y;
@@ -30,6 +31,7 @@ public class TerminatorArrowProjectile extends Projectile {
 		this.setDamage(damage);
 		this.speed = speed;
 		this.setDistance(distance);
+		this.knockback = knockback;
 	}
 
 	@Override

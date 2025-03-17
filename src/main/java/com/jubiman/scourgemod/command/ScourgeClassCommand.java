@@ -2,6 +2,7 @@ package com.jubiman.scourgemod.command;
 
 import com.jubiman.scourgemod.player.ScourgePlayer;
 import com.jubiman.scourgemod.player.ScourgePlayersHandler;
+import com.jubiman.scourgemod.player.playerclass.EmptyClass;
 import com.jubiman.scourgemod.player.playerclass.PlayerClass;
 import com.jubiman.scourgemod.player.playerclass.hunter.AssassinClass;
 import com.jubiman.scourgemod.player.playerclass.hunter.HunterClass;
@@ -54,7 +55,7 @@ public class ScourgeClassCommand extends ModularChatCommand {
 				}
 				switch ((String) args[2]) {
 					case "empty": {
-						player.setPlayerClass(null, playerMob);
+						player.setPlayerClass(new EmptyClass(player), playerMob);
 						break;
 					}
 					case "hunter": {

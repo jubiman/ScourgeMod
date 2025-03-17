@@ -48,6 +48,7 @@ scourge_flawless_jade_gemstone=Flawless Jade Gemstone
 scourge_perfect_jade_gemstone=Perfect Jade Gemstone
 scourge_terminator=Terminator
 scourge_grindstone=Grindstone
+scourge_essence_of_rebirth=Essence of Rebirth
 
 [itemtooltip]
 gemstoneslot_combat=Combat slot
@@ -59,6 +60,7 @@ manapercentcosttip=<value>% of maximum mana
 scourge_debugmana=Debug mana item
 terminator1=Shoots 4 arrows at once
 terminator2=Divides crit chance by 4
+essence_of_rebirth=Resets all stats and refunds all stat points
 
 [buffmodifiers]
 daggerdamage=<mod>% dagger damage
@@ -70,3 +72,18 @@ scourge_strength=Strength
 scourge_dexterity=Dexterity
 scourge_intelligence=Intelligence
 scourge_charisma=Charisma
+
+[ui]
+vitality_tip=Increases maximum health and health regeneration
+strength_tip=Increases physical and ranged damage
+dexterity_tip=Increases critical chance and damage, movement speed and attack speed
+intelligence_tip=Increases magic damage, maximum mana and mana regeneration
+charisma_tip=Decreases prices in shops
+statpoints_tip=Skill points are used to level up stats and skills
+level_up=Level up
+level_down=Level down
+apply=Apply
+apply_changes=Apply changes
+experience=Exp: <value>/<next>
+level=Level: <value>
+stat_form_button=Scourge stats

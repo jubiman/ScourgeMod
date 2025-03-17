@@ -1,7 +1,5 @@
 package com.jubiman.scourgemod.player.stat;
 
-import com.jubiman.scourgemod.item.gemstone.GemstoneQuality;
-
 public abstract class Stat {
 	protected static final int defaultLevel = 1; // TODO: make config for no fucking reason?
 	protected int level;
@@ -35,15 +33,21 @@ public abstract class Stat {
 		this.level = defaultLevel;
 	}
 
-	public abstract void addGemstoneBoost(GemstoneQuality gemstoneQuality);
-
-	public abstract void removeGemstoneBoost(GemstoneQuality gemstoneQuality);
-
 	public void resetBoost() {
 		this.boost = 0;
 	}
 
 	public int getTotalLevel() {
 		return this.level + this.boost;
+	}
+
+	public abstract StatType getStatType();
+
+	public enum StatType {
+		VITALITY,
+		STRENGTH,
+		DEXTERITY,
+		INTELLIGENCE,
+		CHARISMA
 	}
 }

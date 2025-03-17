@@ -18,8 +18,15 @@ public class LevelBase {
 	}
 
 	public boolean removeExp(long amount){
+		int oldLevel = getLevel();
 		exp -= amount;
-		return levelUp();
+		if(exp < 0)
+			exp = 0;
+		if (getLevel() < oldLevel){
+			threshold = nextThreshold();
+			return true;
+		}
+		return false;
 	}
 
 	public boolean setExp(long amount) {
@@ -37,8 +44,7 @@ public class LevelBase {
 	}
 
 	public int getLevel() {
-		// TODO: find out how to get level from exp
-		return (int) Math.floor((250 + Math.sqrt(62500 + 1000 * exp)) / 500);
+		return (int) Math.floor(Math.pow(exp / 50d, 1/1.9));
 	}
 
 	public long getExp() {
@@ -46,10 +52,17 @@ public class LevelBase {
 	}
 
 	private long nextThreshold() {
+		return nextThreshold(getLevel());
+	}
+
+	public long nextThreshold(int level) {
 		// TODO: decide whether to use this formula or a different one
 		// http://howtomakeanrpg.com/a/how-to-make-an-rpg-levels.html
-		int x = getLevel() + 1;
-		return 250L * ((long) x * x) - (250L * x);
+		return Math.round(50 * Math.pow(level + 1, 1.9));
+	}
+
+	public long previousThreshold() {
+		return nextThreshold(getLevel() - 1);
 	}
 
 	public void save(String name, SaveData data) {

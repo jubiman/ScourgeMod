@@ -8,7 +8,7 @@ plugins {
 project.ext.modID = "com.jubiman.scourgemod" // The unique id of your mod. Must be all lowercase and cannot use special characters.
 project.ext.modName = "ScourgeMod" // The display name of your mod.
 project.ext.modVersion = "1.0" // Your current builds version. Must follow the xx.xx... format.
-project.ext.gameVersion = "0.22.0" // The target game version.
+project.ext.gameVersion = "0.31.1" // The target game version.
 project.ext.modDescription = "A mod expanding upon the normal Necesse gameplay, adding bosses and more content" // Short description of what your mod is.
 project.ext.author = "Jubiman" // Your name
 
@@ -34,7 +34,7 @@ import org.apache.tools.ant.taskdefs.condition.Os
 if (Os.isFamily(Os.FAMILY_WINDOWS)) {
     gameDirectory = "E:/SteamGames/steamapps/common/Necesse"
 } else if (Os.isFamily(Os.FAMILY_UNIX)) {
-    gameDirectory = "/home/jubiman/.local/share/Steam/steamapps/common/Necesse"
+    gameDirectory = "${System.properties['user.home']}/.local/share/Steam/steamapps/common/Necesse"
 } else {
     throw new Exception("Unsupported OS")
 }
@@ -65,8 +65,13 @@ repositories {
     }
 }
 
+configurations {
+    libDepends
+}
+
 sourceSets.main.output.resourcesDir = file("build/mod/resources/")
 sourceSets.main.java.outputDir = file("build/mod/")
+sourceSets.main.compileClasspath += configurations.libDepends // Adds libDepends configuration to classpath
 def buildLocation = "build/jar"
 
 compileJava.options.encoding = "UTF-8"
@@ -78,24 +83,12 @@ if (!file(gameDirectory + "/Necesse.jar").exists()) {
 dependencies {
     implementation files(gameDirectory + "/Necesse.jar")
     implementation fileTree(gameDirectory + "/lib/")
-    implementation fileTree("./mods/")
-	implementation 'org.jetbrains:annotations:23.1.0' // Add all mods located in local mods folder
+    implementation fileTree("./mods/") // Add all mods located in local mods folder
+	implementation 'org.jetbrains:annotations:23.1.0'
 
-    compileOnly "com.jubiman:customdatalib:1.2"
+    compileOnly "com.jubiman:customdatalib:2.0.2"
 }
 
-
-task buildModJar(type: Jar) {
-    group "necesse"
-    description "Generates the mod jar into the build folder"
-    dependsOn "classes"
-
-    // Add mod output
-    from sourceSets.main.java.outputDir
-
-    archiveName "${jarName}.jar"
-    destinationDir file(buildLocation)
-}
 
 task createAppID {
     group "necesse"
@@ -134,9 +127,9 @@ task runClient(type: JavaExec) {
 
     classpath = files(gameDirectory + "/Necesse.jar")
 
-    main = "StartClient"
-    jvmArgs "-Xms512m", "-Xmx3G", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseG1GC", "-XX:G1NewSizePercent=20", "-XX:G1ReservePercent=20", "-XX:MaxGCPauseMillis=50", "-XX:G1HeapRegionSize=32M"
-    args "-mod \"${buildLocation}\""
+    main = "StartSteamClient"
+    jvmArgs "-Xms512m", "-Xmx4G", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseG1GC", "-XX:G1NewSizePercent=20", "-XX:G1ReservePercent=20", "-XX:MaxGCPauseMillis=50", "-XX:G1HeapRegionSize=32M"
+    args "-dev", "-mod \"${buildLocation}\""
 }
 
 task runDevClient(type: JavaExec) {
@@ -146,8 +139,8 @@ task runDevClient(type: JavaExec) {
 
     classpath = files(gameDirectory + "/Necesse.jar")
 
-    main = "StartClient"
-    jvmArgs "-Xms512m", "-Xmx3G", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseG1GC", "-XX:G1NewSizePercent=20", "-XX:G1ReservePercent=20", "-XX:MaxGCPauseMillis=50", "-XX:G1HeapRegionSize=32M"
+    main = "StartSteamClient"
+    jvmArgs "-Xms512m", "-Xmx4G", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseG1GC", "-XX:G1NewSizePercent=20", "-XX:G1ReservePercent=20", "-XX:MaxGCPauseMillis=50", "-XX:G1HeapRegionSize=32M"
     args "-dev 1", "-mod \"${buildLocation}\""
 }
 
@@ -158,7 +151,27 @@ task runServer(type: JavaExec) {
 
     classpath = files(gameDirectory + "/Server.jar")
 
-    main = "StartServer"
-    jvmArgs "-Xms512m", "-Xmx3G", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseG1GC", "-XX:G1NewSizePercent=20", "-XX:G1ReservePercent=20", "-XX:MaxGCPauseMillis=50", "-XX:G1HeapRegionSize=32M"
+    main = "StartDesktopServer"
+    jvmArgs "-Xms512m", "-Xmx4G", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseG1GC", "-XX:G1NewSizePercent=20", "-XX:G1ReservePercent=20", "-XX:MaxGCPauseMillis=50", "-XX:G1HeapRegionSize=32M"
     args "-mod \"${buildLocation}\""
+}
+
+task buildModJar(type: Jar) {
+    group "necesse"
+    description "Generates the mod jar into the build folder"
+    dependsOn "classes"
+
+    doFirst {
+        fileTree(dir: buildLocation).exclude("${jarName}.jar").visit { FileVisitDetails details ->
+            delete details.file
+        }
+    }
+
+    // Add mod output
+    from sourceSets.main.java.outputDir
+    // Add the dependencies
+    from configurations.libDepends.collect { it.isDirectory() ? it : zipTree(it) }
+
+    archiveName "${jarName}.jar"
+    destinationDir file(buildLocation)
 }

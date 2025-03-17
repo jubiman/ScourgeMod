@@ -4,6 +4,7 @@ import com.jubiman.scourgemod.buff.ScourgePassiveBuff;
 import com.jubiman.scourgemod.player.ScourgePlayer;
 import com.jubiman.scourgemod.player.playerclass.hunter.HunterClass;
 import necesse.entity.mobs.buffs.ActiveBuff;
+import necesse.entity.mobs.buffs.BuffEventSubscriber;
 import necesse.entity.mobs.buffs.BuffModifiers;
 
 public class HunterBuff extends ScourgePassiveBuff {

@@ -1,6 +1,5 @@
 package com.jubiman.scourgemod.player.stat;
 
-import com.jubiman.scourgemod.item.gemstone.GemstoneQuality;
 
 public class Dexterity extends Stat {
 	public Dexterity() {
@@ -12,13 +11,8 @@ public class Dexterity extends Stat {
 	}
 
 	@Override
-	public void addGemstoneBoost(GemstoneQuality gemstoneQuality) {
-		this.boost += gemstoneQuality.dexterity;
-	}
-
-	@Override
-	public void removeGemstoneBoost(GemstoneQuality gemstoneQuality) {
-		this.boost -= gemstoneQuality.dexterity;
+	public StatType getStatType() {
+		return StatType.DEXTERITY;
 	}
 
 	public float getDexterityMSBoost() {
@@ -38,6 +32,6 @@ public class Dexterity extends Stat {
 	}
 
 	public float getDexterityRDBoost() {
-		return (float) (0.001 * getTotalLevel() * (getTotalLevel() - 1));
+		return (float) (0.003 * getTotalLevel() * (getTotalLevel() - 1));
 	}
 }

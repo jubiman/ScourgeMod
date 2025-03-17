@@ -1,6 +1,5 @@
 package com.jubiman.scourgemod.player.stat;
 
-import com.jubiman.scourgemod.item.gemstone.GemstoneQuality;
 
 public class Strength extends Stat {
 	public Strength() {
@@ -12,13 +11,8 @@ public class Strength extends Stat {
 	}
 
 	@Override
-	public void addGemstoneBoost(GemstoneQuality gemstoneQuality) {
-		this.boost += gemstoneQuality.strength;
-	}
-
-	@Override
-	public void removeGemstoneBoost(GemstoneQuality gemstoneQuality) {
-		this.boost -= gemstoneQuality.strength;
+	public StatType getStatType() {
+		return StatType.STRENGTH;
 	}
 
 	public int getStrengthAPBoost() {

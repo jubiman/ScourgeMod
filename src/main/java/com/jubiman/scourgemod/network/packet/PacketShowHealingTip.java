@@ -7,7 +7,7 @@ import necesse.engine.network.PacketWriter;
 import necesse.engine.network.client.Client;
 import necesse.engine.util.GameRandom;
 import necesse.gfx.gameFont.FontOptions;
-import necesse.level.maps.hudManager.floatText.DmgText;
+import necesse.level.maps.hudManager.floatText.DamageText;
 
 import java.awt.*;
 
@@ -43,7 +43,7 @@ public class PacketShowHealingTip extends Packet {
 	@Override
 	public void processClient(NetworkPacket packet, Client client) {
 		// TODO: make setting to disable?
-		client.getLevel().hudManager.addElement(new DmgText(x, y, healing, new FontOptions(size)
+		client.getLevel().hudManager.addElement(new DamageText(x, y, healing, new FontOptions(size)
 				.outline().color(Color.GREEN), GameRandom.globalRandom.getIntBetween(25, 45)));
 	}
 }

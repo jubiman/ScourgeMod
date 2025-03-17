@@ -1,7 +1,9 @@
 package com.jubiman.scourgemod;
 
-import com.jubiman.scourgemod.item.gemstone.GemstoneSlot;
+import necesse.engine.Settings;
 import necesse.gfx.gameTexture.GameTexture;
+import necesse.gfx.ui.ButtonIcon;
+
 
 public class Textures {
 	public static class UI {
@@ -10,23 +12,7 @@ public class Textures {
 		public static GameTexture inventoryslot_icon_physical;
 		public static GameTexture inventoryslot_icon_magic;
 		public static GameTexture inventoryslot_icon_charisma;
-
-		public static GameTexture getGemstoneSlotTexture(GemstoneSlot.GemstoneSlotType type) {
-			switch (type) {
-				case COMBAT:
-					return inventoryslot_icon_combat;
-				case DEFENSE:
-					return inventoryslot_icon_defense;
-				case PHYSICAL:
-					return inventoryslot_icon_physical;
-				case MAGIC:
-					return inventoryslot_icon_magic;
-				case CHARISMA:
-					return inventoryslot_icon_charisma;
-				default:
-					throw new AssertionError();
-			}
-		}
+		public static ButtonIcon stat_icon;
 	}
 
 	public static void initTextures() {
@@ -35,5 +21,7 @@ public class Textures {
 		UI.inventoryslot_icon_physical = GameTexture.fromFile("ui/inventoryslot_icon_physical");
 		UI.inventoryslot_icon_magic = GameTexture.fromFile("ui/inventoryslot_icon_magic");
 		UI.inventoryslot_icon_charisma = GameTexture.fromFile("ui/inventoryslot_icon_charisma");
+		UI.stat_icon = new ButtonIcon(Settings.UI, "");
+		UI.stat_icon.texture = GameTexture.fromFile("ui/scourge_stat_icon");
 	}
 }

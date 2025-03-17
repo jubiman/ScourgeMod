@@ -1,7 +1,5 @@
 package com.jubiman.scourgemod.player.stat;
 
-import com.jubiman.scourgemod.item.gemstone.GemstoneQuality;
-
 public class Vitality extends Stat {
 	public Vitality() {
 		super();
@@ -12,13 +10,8 @@ public class Vitality extends Stat {
 	}
 
 	@Override
-	public void addGemstoneBoost(GemstoneQuality gemstoneQuality) {
-		this.boost += gemstoneQuality.vitality;
-	}
-
-	@Override
-	public void removeGemstoneBoost(GemstoneQuality gemstoneQuality) {
-		this.boost -= gemstoneQuality.vitality;
+	public StatType getStatType() {
+		return StatType.VITALITY;
 	}
 
 	public float getVitalityHPBoost() {

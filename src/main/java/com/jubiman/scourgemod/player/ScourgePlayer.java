@@ -1,18 +1,13 @@
 package com.jubiman.scourgemod.player;
 
-import com.jubiman.customdatalib.api.ClientTickable;
 import com.jubiman.customdatalib.api.Savable;
 import com.jubiman.customdatalib.player.CustomPlayer;
-import com.jubiman.scourgemod.item.gemstone.GemstoneQuality;
 import com.jubiman.scourgemod.network.packet.PacketSyncLevel;
 import com.jubiman.scourgemod.player.level.LevelBase;
-import com.jubiman.scourgemod.player.mana.Mana;
+import com.jubiman.scourgemod.player.playerclass.EmptyClass;
 import com.jubiman.scourgemod.player.playerclass.PlayerClass;
 import com.jubiman.scourgemod.player.playerclass.mage.MageClass;
 import com.jubiman.scourgemod.player.stat.*;
-import necesse.engine.GameLog;
-import necesse.engine.localization.Localization;
-import necesse.engine.network.client.Client;
 import necesse.engine.network.packet.PacketMobBuffRemove;
 import necesse.engine.network.server.Server;
 import necesse.engine.network.server.ServerClient;
@@ -24,19 +19,16 @@ import necesse.entity.mobs.buffs.ActiveBuff;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.time.chrono.ChronoLocalDate;
-import java.util.function.Consumer;
 
 public class ScourgePlayer extends CustomPlayer implements Savable {
 	private PlayerClass playerClass;
-	private Strength strength;
-	private Dexterity dexterity;
-	private Intelligence intelligence;
-	private Vitality vitality;
-	private Charisma charisma; // TODO: reduce NPC buy prices and increase sell prices (probably a patch)
-	private int skillPoints;
+	private final Strength strength;
+	private final Dexterity dexterity;
+	private final Intelligence intelligence;
+	private final Vitality vitality;
+	private final Charisma charisma; // TODO: reduce NPC buy prices and increase sell prices (probably a patch)
 	private final LevelBase playerLevel;
+	private int statPoints;
 
 	public ScourgePlayer(long auth) {
 		super(auth);
@@ -47,18 +39,15 @@ public class ScourgePlayer extends CustomPlayer implements Savable {
 		vitality = new Vitality();
 		charisma = new Charisma();
 
-		skillPoints = 0;
+		statPoints = 0;
 		playerLevel = new LevelBase();
+		playerClass = new EmptyClass(this);
 	}
 
 	@Override
 	public void addSaveData(@NotNull SaveData save) {
 		playerLevel.save("playerLevel", save);
-		if (playerClass != null)
-			playerClass.save(save);
-		//mana.save(save);
-
-
+		playerClass.save(save);
 
 		save.addInt("str", getStrength());
 		save.addInt("dex", getDexterity());
@@ -66,7 +55,7 @@ public class ScourgePlayer extends CustomPlayer implements Savable {
 		save.addInt("vit", getVitality());
 		save.addInt("cha", getCharisma());
 
-		save.addInt("sp", skillPoints);
+		save.addInt("sp", statPoints);
 	}
 
 	@Override
@@ -83,15 +72,14 @@ public class ScourgePlayer extends CustomPlayer implements Savable {
 			throw new RuntimeException(e);
 		}
 
-		//mana.load(data.getLoadDataByName("mana").get(0));
+		strength.setLevel(data.getInt("str"));
+		dexterity.setLevel(data.getInt("dex"));
+		intelligence.setLevel(data.getInt("int"));
+		vitality.setLevel(data.getInt("vit"));
+		charisma.setLevel(data.getInt("cha"));
 
-		strength = new Strength(data.getInt("str"));
-		dexterity = new Dexterity(data.getInt("dex"));
-		intelligence = new Intelligence(data.getInt("int"));
-		vitality = new Vitality(data.getInt("vit"));
-		charisma = new Charisma(data.getInt("cha"));
 
-		skillPoints = data.getInt("sp");
+		statPoints = data.getInt("sp");
 	}
 
 	@Override
@@ -106,11 +94,11 @@ public class ScourgePlayer extends CustomPlayer implements Savable {
 				if (!player.buffManager.hasBuff("scourge_" + string_id))
 					player.addBuff(new ActiveBuff("scourge_" + string_id, player, 1000000, null), true);
 
-		if (playerClass != null && !player.buffManager.hasBuff(playerClass.getBuffStringId()))
+		if (!(playerClass instanceof EmptyClass) && !player.buffManager.hasBuff(playerClass.getBuffStringId()))
 			player.addBuff(new ActiveBuff(playerClass.getBuffStringId(), player, 1000000, null), true);
 
 		// If player is a mage, regenerate 1% missing mana every second
-		if (server.tickManager().isFirstGameTickInSecond() && playerClass != null && playerClass instanceof MageClass) {
+		if (server.tickManager().isFirstGameTickInSecond() && playerClass instanceof MageClass) {
 			double ln = Math.log(this.getPlayerLevel().getLevel() + 1);
 			float missingManaPercent = (int) (1 + .1f * ln * ln); // goes to 100% at e^(3 sqrt(110)) which is a number with 14 digits, realistically doesn't go much higher than 2-3%
 			float currentMana = player.getMana();
@@ -132,7 +120,7 @@ public class ScourgePlayer extends CustomPlayer implements Savable {
 //	}
 
 	public void resetStats() {
-		skillPoints += getStrength() + getDexterity() + getIntelligence() + getVitality() + getCharisma() - 5;
+		calcStatPoints();
 
 		strength.reset();
 		dexterity.reset();
@@ -141,20 +129,12 @@ public class ScourgePlayer extends CustomPlayer implements Savable {
 		charisma.reset();
 	}
 
-	/*public Mana getMana() {
-		return mana;
-	}
-
-	public int getMaxMana() {
-		return mana.getMaxMana();
-	}*/
-
 	public PlayerClass getPlayerClass() {
 		return playerClass;
 	}
 
 	public void setPlayerClass(PlayerClass playerClass, @NotNull PlayerMob player) {
-		if (this.playerClass != null) {
+		if (!(this.playerClass instanceof EmptyClass)) {
 			player.buffManager.removeBuff(this.playerClass.getBuffStringId(), true);
 			player.getServerClient().sendPacket(new PacketMobBuffRemove(player.getUniqueID(), BuffRegistry.getBuffID(this.playerClass.getBuffStringId())));
 		}
@@ -216,35 +196,24 @@ public class ScourgePlayer extends CustomPlayer implements Savable {
 		this.charisma.setLevel(charisma);
 	}
 
-	public int getSkillPoints() {
-		return skillPoints;
+	public int getStatPoints() {
+		return statPoints;
 	}
 
-	public void setSkillPoints(int skillPoints) {
-		this.skillPoints = skillPoints;
+	public void setStatPoints(int statPoints) {
+		this.statPoints = statPoints;
 	}
 
 	public LevelBase getPlayerLevel() {
 		return playerLevel;
 	}
 
-	/*public boolean useMana(int mana) { // TODO: maybe display message/sound of no mana
-		return this.mana.useMana(mana);
-	}*/
-
-	public boolean addExp(int exp) {
-		return playerLevel.addExp(exp);
-	}
-
 	public boolean addExp(int exp, @NotNull ServerClient serverClient) {
 		boolean upped = playerLevel.addExp(exp);
+		if (upped) {
+			calcStatPoints();
+		}
 		serverClient.sendPacket(new PacketSyncLevel(this));
-		return upped;
-	}
-
-	public boolean addExp(int exp, @NotNull Server server) {
-		boolean upped = playerLevel.addExp(exp);
-		server.network.sendToAllClients(new PacketSyncLevel(this));
 		return upped;
 	}
 
@@ -253,9 +222,7 @@ public class ScourgePlayer extends CustomPlayer implements Savable {
 	}
 
 	public String getClassName() {
-		if (playerClass != null)
-			return playerClass.getDisplayName();
-		return Localization.translate("playerclass", "empty");
+		return playerClass.getDisplayName();
 	}
 
 	public int getStatFromBuffID(@NotNull String stringID) {
@@ -300,56 +267,6 @@ public class ScourgePlayer extends CustomPlayer implements Savable {
 		return null; // shouldn't happen
 	}
 
-	public void addGemstoneBoost(String gemstoneType) {
-		try {
-			doGemstoneAction(gemstoneType, Stat.class.getMethod("addGemstoneBoost", GemstoneQuality.class));
-		} catch (NoSuchMethodException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private void doGemstoneAction(String gemstoneType, Method method) {
-		// TODO: maybe change the way gemstones work with a quality field/GND field
-		try {
-			switch (gemstoneType) {
-				case "scourge_rough_topaz_gemstone": {
-					method.invoke(charisma, GemstoneQuality.ROUGH);
-					break;
-				}
-				case "scourge_flawed_topaz_gemstone": {
-					method.invoke(charisma, GemstoneQuality.FLAWED);
-					break;
-				}
-				case "scourge_fine_topaz_gemstone": {
-					method.invoke(charisma, GemstoneQuality.FINE);
-					break;
-				}
-				case "scourge_flawless_topaz_gemstone": {
-					method.invoke(charisma, GemstoneQuality.FLAWLESS);
-					break;
-				}
-				case "scourge_perfect_topaz_gemstone": {
-					method.invoke(charisma, GemstoneQuality.PERFECT);
-					break;
-				}
-				case "charisma": {
-					//charisma.addGemstoneBoost();
-					break;
-				}
-			}
-		} catch (IllegalAccessException | InvocationTargetException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public void removeGemstoneBoost(String gemstoneType) {
-		try {
-			doGemstoneAction(gemstoneType, Stat.class.getMethod("removeGemstoneBoost", GemstoneQuality.class));
-		} catch (NoSuchMethodException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
 	public void onDeath() {
 		// Remove all gemstone boosts
 		strength.resetBoost();
@@ -357,5 +274,34 @@ public class ScourgePlayer extends CustomPlayer implements Savable {
 		intelligence.resetBoost();
 		vitality.resetBoost();
 		charisma.resetBoost();
+	}
+
+	public Stat getStat(Stat.StatType stat) {
+		switch (stat) {
+			case VITALITY:
+				return vitality;
+			case STRENGTH:
+				return strength;
+			case DEXTERITY:
+				return dexterity;
+			case INTELLIGENCE:
+				return intelligence;
+			case CHARISMA:
+				return charisma;
+		}
+		return null;
+	}
+
+	public boolean levelStat(Stat.StatType stat) {
+		if (statPoints > 0) {
+			getStat(stat).addLevel(1);
+			statPoints--;
+			return true;
+		}
+		return false;
+	}
+
+	public void calcStatPoints() {
+		statPoints = getLevel() * 3 - getStrengthObject().getLevel() - getDexterityObject().getLevel() - getIntelligenceObject().getLevel() - getVitalityObject().getLevel() - getCharismaObject().getLevel();
 	}
 }

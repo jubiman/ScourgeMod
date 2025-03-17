@@ -4,6 +4,7 @@ import com.jubiman.scourgemod.player.ScourgePlayer;
 import com.jubiman.scourgemod.player.ScourgePlayersHandler;
 import necesse.entity.mobs.PlayerMob;
 import necesse.entity.mobs.buffs.ActiveBuff;
+import necesse.entity.mobs.buffs.BuffEventSubscriber;
 import necesse.entity.mobs.buffs.staticBuffs.Buff;
 
 public abstract class ScourgePassiveBuff extends Buff {
@@ -16,7 +17,7 @@ public abstract class ScourgePassiveBuff extends Buff {
 	}
 
 	@Override
-	public void init(ActiveBuff activeBuff) {
+	public void init(ActiveBuff activeBuff, BuffEventSubscriber buffEventSubscriber) {
 		tick(activeBuff);
 	}
 

@@ -1,5 +1,7 @@
 package com.jubiman.scourgemod.command;
 
+import com.jubiman.scourgemod.network.packet.PacketSyncLevel;
+import com.jubiman.scourgemod.network.packet.PacketSyncStats;
 import com.jubiman.scourgemod.player.ScourgePlayer;
 import com.jubiman.scourgemod.player.ScourgePlayersHandler;
 import com.jubiman.scourgemod.player.level.LevelBase;
@@ -53,19 +55,26 @@ public class ScourgeStatCommand extends ModularChatCommand {
 				charisma(player, (String) args[1], (int) args[3], commandLog);
 				break;
 			}
-			case "sp":
-			case "skillpoint":
-			case "skillpoints": {
-				skillpoints(player, (String) args[1], (int) args[3], commandLog);
+			case "sp": // TODO: remove this case to avoid confusion with skillpoints in the future?
+			case "statpoint":
+			case "statpoints": {
+				statpoints(player, (String) args[1], (int) args[3], commandLog);
 				break;
 			}
 			case "lvl":
-			case "exp":
 			case "level": {
-				level(player, (String) args[1], (int) args[3], commandLog, (ServerClient) args[2]);
-				break;
+				level(player, (String) args[1], (int) args[3], commandLog);
+				serverClient.sendPacket(new PacketSyncLevel(player));
+				return;
+			}
+			case "exp":
+			case "experience": {
+				experience(player, (String) args[1], (int) args[3], commandLog);
+				serverClient.sendPacket(new PacketSyncLevel(player));
+				return;
 			}
 		}
+		serverClient.sendPacket(new PacketSyncStats(player));
 	}
 
 	private static void vitality(ScourgePlayer player, String option, int value, CommandLog commandLog) {
@@ -158,25 +167,49 @@ public class ScourgeStatCommand extends ModularChatCommand {
 		commandLog.add("Charisma set to " + player.getCharisma());
 	}
 
-	private static void skillpoints(ScourgePlayer player, String option, int value, CommandLog commandLog) {
+	private static void statpoints(ScourgePlayer player, String option, int value, CommandLog commandLog) {
 		switch (option.toLowerCase()) {
 			case "set":
-				player.setSkillPoints(value);
+				player.setStatPoints(value);
 				break;
 			case "add":
-				player.setSkillPoints(player.getSkillPoints() + value);
+				player.setStatPoints(player.getStatPoints() + value);
 				break;
 			case "remove":
-				player.setSkillPoints(player.getSkillPoints() - value);
+				player.setStatPoints(player.getStatPoints() - value);
 				break;
 			case "get":
-				commandLog.add("SkillPoints: " + player.getSkillPoints());
+				commandLog.add("Stat Points: " + player.getStatPoints());
 				return;
 		}
-		commandLog.add("SkillPoints set to " + player.getSkillPoints());
+		commandLog.add("Stat Points set to " + player.getStatPoints());
 	}
 
-	private static void level(ScourgePlayer player, String option, int value, CommandLog commandLog, ServerClient serverClient) {
+	private static void level(ScourgePlayer player, String option, int value, CommandLog commandLog) {
+		LevelBase level = player.getPlayerLevel();
+		boolean leveledUp = false;
+		switch (option.toLowerCase()) {
+			case "set":
+				leveledUp = level.setExp(level.nextThreshold(value-1));
+				break;
+			case "add":
+				leveledUp = level.setExp(level.nextThreshold(level.getLevel()-1 + value));
+				break;
+			case "remove":
+				leveledUp = level.setExp(level.nextThreshold(level.getLevel()-1 - value));
+				break;
+			case "get":
+				commandLog.add("Exp: " + level.getExp() + ", which is level " + level.getLevel());
+				return;
+		}
+		if (leveledUp) {
+			commandLog.add("Player leveled up to level " + level.getLevel());
+			player.calcStatPoints();
+		}
+		commandLog.add("Player exp set to " + level.getExp() + ", which is level " + level.getLevel());
+	}
+
+	private static void experience(ScourgePlayer player, String option, int value, CommandLog commandLog) {
 		LevelBase level = player.getPlayerLevel();
 		boolean leveledUp = false;
 		switch (option.toLowerCase()) {
@@ -184,17 +217,19 @@ public class ScourgeStatCommand extends ModularChatCommand {
 				leveledUp = level.setExp(value);
 				break;
 			case "add":
-				leveledUp = level.addExp(level.getLevel() + value);
+				leveledUp = level.addExp(value);
 				break;
 			case "remove":
-				leveledUp = level.removeExp(level.getLevel() - value);
+				leveledUp = level.removeExp(value);
 				break;
 			case "get":
 				commandLog.add("Exp: " + level.getExp() + ", which is level " + level.getLevel());
 				return;
 		}
-		if (leveledUp)
-			serverClient.sendChatMessage("You leveled up to level " + level.getLevel());
+		if (leveledUp) {
+			commandLog.add("Player leveled up to level " + level.getLevel());
+			player.calcStatPoints();
+		}
 		commandLog.add("Player exp set to " + level.getExp() + ", which is level " + level.getLevel());
 	}
 }

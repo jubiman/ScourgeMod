@@ -1,8 +1,14 @@
 package com.jubiman.scourgemod.player;
 
 
+import com.jubiman.customdatalib.client.CustomClientRegistry;
 import com.jubiman.customdatalib.player.CustomPlayerRegistry;
 import com.jubiman.customdatalib.player.CustomPlayersHandler;
+import com.jubiman.scourgemod.network.packet.PacketSyncScourgePlayer;
+import necesse.engine.GameEventListener;
+import necesse.engine.GameEvents;
+import necesse.engine.events.GameEvent;
+import necesse.engine.events.ServerClientConnectedEvent;
 import necesse.entity.mobs.PlayerMob;
 
 public class ScourgePlayersHandler extends CustomPlayersHandler<ScourgePlayer> {
@@ -11,6 +17,15 @@ public class ScourgePlayersHandler extends CustomPlayersHandler<ScourgePlayer> {
 
 	public ScourgePlayersHandler() {
 		super(ScourgePlayer.class, name);
+	}
+
+	static {
+		GameEvents.addListener(ServerClientConnectedEvent.class, new GameEventListener<ServerClientConnectedEvent>() {
+			@Override
+			public void onEvent(ServerClientConnectedEvent serverClientConnectedEvent) {
+				serverClientConnectedEvent.client.sendPacket(new PacketSyncScourgePlayer(getPlayer(serverClientConnectedEvent.client.authentication)));
+			}
+		});
 	}
 
 	public static ScourgePlayersHandler getInstance() {
@@ -22,15 +37,15 @@ public class ScourgePlayersHandler extends CustomPlayersHandler<ScourgePlayer> {
 	}
 
 	/**
-	 * Gets the player from the ServerClient or the ClientClient.
+	 * Gets the player from the ServerClient.
 	 * @param player The player to get the ScourgePlayer from.
 	 * @return The ScourgePlayer.
 	 */
 	public static ScourgePlayer getPlayer(PlayerMob player) {
-		if (player.isServerClient()) {
-			return getPlayer(player.getServerClient().authentication);
-		} else {
-			return getPlayer(player.getClientClient().authentication);
-		}
+		return getPlayer(player.getServerClient().authentication);
+	}
+
+	public static ScourgeClient getClient() {
+		return (ScourgeClient) CustomClientRegistry.get(name);
 	}
 }
