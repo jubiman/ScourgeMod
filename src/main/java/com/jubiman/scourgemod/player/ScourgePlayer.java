@@ -302,6 +302,6 @@ public class ScourgePlayer extends CustomPlayer implements Savable {
 	}
 
 	public void calcStatPoints() {
-		statPoints = getLevel() * 3 - getStrengthObject().getLevel() - getDexterityObject().getLevel() - getIntelligenceObject().getLevel() - getVitalityObject().getLevel() - getCharismaObject().getLevel();
+		statPoints = getLevel() * 3 - getStrengthObject().getLevel() - getDexterityObject().getLevel() - getIntelligenceObject().getLevel() - getVitalityObject().getLevel() - getCharismaObject().getLevel() + 5;
 	}
 }

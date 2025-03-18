@@ -15,33 +15,19 @@ import necesse.engine.window.GameWindow;
 import necesse.engine.window.WindowManager;
 import necesse.entity.mobs.PlayerMob;
 import necesse.gfx.forms.Form;
-import necesse.gfx.forms.FormManager;
 import necesse.gfx.forms.MainGameFormManager;
 import necesse.gfx.forms.components.FormTextButton;
 
 public class StatForm extends Form {
-	private FormManager formManager;
 	private final FormApplyTextButton vitality;
-	private final FormTextButton vitalityPlus;
-	private final FormTextButton vitalityMinus;
 	private final FormApplyTextButton strength;
-	private final FormTextButton strengthPlus;
-	private final FormTextButton strengthMinus;
 	private final FormApplyTextButton intelligence;
-	private final FormTextButton intelligencePlus;
-	private final FormTextButton intelligenceMinus;
 	private final FormApplyTextButton charisma;
-	private final FormTextButton charismaPlus;
-	private final FormTextButton charismaMinus;
 	private final FormApplyTextButton dexterity;
-	private final FormTextButton dexterityPlus;
-	private final FormTextButton dexterityMinus;
 	private final FormApplyTextButton statPoints;
 
 	private final FormTextButton experience;
 	private final FormTextButton level;
-
-	private final FormTextButton applyButton;
 
 	private Client client;
 	private final ScourgeClient player;
@@ -68,56 +54,83 @@ public class StatForm extends Form {
 
 		// Plus buttons
 		{
-			this.vitalityPlus = new FormTextButton("+", Localization.translate("ui", "level_up"), 330, 10, 40);
-			this.vitalityPlus.onClicked(event -> {
+			FormTextButton btn;
+			btn = new FormTextButton("+", Localization.translate("ui", "level_up"), 330, 10, 40);
+			btn.onClicked(event -> {
 				levelStat(Stat.StatType.VITALITY);
 			});
-			this.strengthPlus = new FormTextButton("+", Localization.translate("ui", "level_up"), 330, 50, 40);
-			this.strengthPlus.onClicked(event -> {
+			addComponent(btn);
+			btn = new FormTextButton("+", Localization.translate("ui", "level_up"), 330, 50, 40);
+			btn.onClicked(event -> {
 				levelStat(Stat.StatType.STRENGTH);
 			});
-			this.intelligencePlus = new FormTextButton("+", Localization.translate("ui", "level_up"), 330, 90, 40);
-			this.intelligencePlus.onClicked(event -> {
+			addComponent(btn);
+			btn = new FormTextButton("+", Localization.translate("ui", "level_up"), 330, 90, 40);
+			btn.onClicked(event -> {
 				levelStat(Stat.StatType.INTELLIGENCE);
 			});
-			this.charismaPlus = new FormTextButton("+", Localization.translate("ui", "level_up"), 330, 130, 40);
-			this.charismaPlus.onClicked(event -> {
+			addComponent(btn);
+			btn = new FormTextButton("+", Localization.translate("ui", "level_up"), 330, 130, 40);
+			btn.onClicked(event -> {
 				levelStat(Stat.StatType.CHARISMA);
 			});
-			this.dexterityPlus = new FormTextButton("+", Localization.translate("ui", "level_up"), 330, 170, 40);
-			this.dexterityPlus.onClicked(event -> {
+			addComponent(btn);
+			btn = new FormTextButton("+", Localization.translate("ui", "level_up"), 330, 170, 40);
+			btn.onClicked(event -> {
 				levelStat(Stat.StatType.DEXTERITY);
 			});
+			addComponent(btn);
 		}
 		// Minus buttons
 		{
-			this.vitalityMinus = new FormTextButton("-", Localization.translate("ui", "level_down"), 290, 10, 40);
-		this.vitalityMinus.onClicked(event -> {
-			removeStat(Stat.StatType.VITALITY);
-		});
-		this.strengthMinus = new FormTextButton("-", Localization.translate("ui", "level_down"), 290, 50, 40);
-		this.strengthMinus.onClicked(event -> {
-			removeStat(Stat.StatType.STRENGTH);
-		});
-		this.intelligenceMinus = new FormTextButton("-", Localization.translate("ui", "level_down"), 290, 90, 40);
-		this.intelligenceMinus.onClicked(event -> {
-			removeStat(Stat.StatType.INTELLIGENCE);
-		});
-		this.charismaMinus = new FormTextButton("-", Localization.translate("ui", "level_down"), 290, 130, 40);
-		this.charismaMinus.onClicked(event -> {
-			removeStat(Stat.StatType.CHARISMA);
-		});
-		this.dexterityMinus = new FormTextButton("-", Localization.translate("ui", "level_down"), 290, 170, 40);
-		this.dexterityMinus.onClicked(event -> {
-			removeStat(Stat.StatType.DEXTERITY);
-		});
+			FormTextButton btn;
+			btn = new FormTextButton("-", Localization.translate("ui", "level_down"), 290, 10, 40);
+			btn.onClicked(event -> {
+				removeStat(Stat.StatType.VITALITY);
+			});
+			addComponent(btn);
+			btn = new FormTextButton("-", Localization.translate("ui", "level_down"), 290, 50, 40);
+			btn.onClicked(event -> {
+				removeStat(Stat.StatType.STRENGTH);
+			});
+			addComponent(btn);
+			btn = new FormTextButton("-", Localization.translate("ui", "level_down"), 290, 90, 40);
+			btn.onClicked(event -> {
+				removeStat(Stat.StatType.INTELLIGENCE);
+			});
+			addComponent(btn);
+			btn = new FormTextButton("-", Localization.translate("ui", "level_down"), 290, 130, 40);
+			btn.onClicked(event -> {
+				removeStat(Stat.StatType.CHARISMA);
+			});
+			addComponent(btn);
+			btn = new FormTextButton("-", Localization.translate("ui", "level_down"), 290, 170, 40);
+			btn.onClicked(event -> {
+				removeStat(Stat.StatType.DEXTERITY);
+			});
+			addComponent(btn);
 		}
 		// Apply button
-		this.applyButton = new FormTextButton(Localization.translate("ui", "apply"), Localization.translate("ui", "apply_changes"), 220, 210, 150);
-		this.applyButton.onClicked(event -> {
+		FormTextButton applyButton = new FormTextButton(Localization.translate("ui", "apply"), Localization.translate("ui", "apply_changes"), 220, 210, 150);
+		applyButton.onClicked(event -> {
 			this.client.network.sendPacket(new PacketSyncStats(this.player));
 			updateText();
 		});
+
+		// Hide form by default
+		setHidden(true);
+
+		// Add components
+		addComponent(this.vitality);
+		addComponent(this.strength);
+		addComponent(this.intelligence);
+		addComponent(this.charisma);
+		addComponent(this.dexterity);
+		addComponent(applyButton);
+
+		addComponent(this.statPoints);
+		addComponent(this.experience);
+		addComponent(this.level);
 	}
 
 	private void levelStat(Stat.StatType statType) {
@@ -147,7 +160,7 @@ public class StatForm extends Form {
 		if (event.isKeyboardEvent()) {
 			if (event.getID() == 256 // KEY_ESCAPE
 				|| event.getID() == Control.INVENTORY.getKey()) {
-				this.formManager.removeComponent(this);
+				this.setHidden(true);
 			} else if (event.getID() == 340) { // KEY_SHIFT
 				this.isShiftDown = event.state;
 			}
@@ -173,32 +186,6 @@ public class StatForm extends Form {
 
 		// Set text
 		updateText();
-
-		addComponent(this.vitality);
-		addComponent(this.vitalityPlus);
-		addComponent(this.vitalityMinus);
-
-		addComponent(this.strength);
-		addComponent(this.strengthPlus);
-		addComponent(this.strengthMinus);
-
-		addComponent(this.intelligence);
-		addComponent(this.intelligencePlus);
-		addComponent(this.intelligenceMinus);
-
-		addComponent(this.charisma);
-		addComponent(this.charismaPlus);
-		addComponent(this.charismaMinus);
-
-		addComponent(this.dexterity);
-		addComponent(this.dexterityPlus);
-		addComponent(this.dexterityMinus);
-
-		addComponent(this.applyButton);
-
-		addComponent(this.statPoints);
-		addComponent(this.experience);
-		addComponent(this.level);
 	}
 
 	private FormApplyTextButton componentFromStatType(Stat.StatType statType) {
@@ -215,11 +202,5 @@ public class StatForm extends Form {
 				return this.dexterity;
 		}
 		return null;
-	}
-
-	public void setFormManager(MainGameFormManager self) {
-		if (this.formManager == null) {
-			this.formManager = self;
-		}
 	}
 }

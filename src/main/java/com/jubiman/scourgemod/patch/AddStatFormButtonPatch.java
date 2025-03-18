@@ -25,15 +25,11 @@ public class AddStatFormButtonPatch {
 				Textures.UI.stat_icon,
 				new LocalMessage("ui", "stat_form_button"));
 		button.onClicked(e -> {
-			if (self.hasComponent(ScourgeFormManager.statForm)) {
-				self.removeComponent(ScourgeFormManager.statForm);
-			} else {
-				self.addComponent(ScourgeFormManager.statForm);
-				ScourgeFormManager.statForm.open(client);
-			}
+			ScourgeFormManager.statForm.setHidden(!ScourgeFormManager.statForm.isHidden());
+			ScourgeFormManager.statForm.open(client);
 		});
 
-		ScourgeFormManager.statForm.setFormManager(self);
+		self.addComponent(ScourgeFormManager.statForm);
 
 		self.rightQuickbar.addButton(button);
 		self.rightQuickbar.updateButtons(true);
