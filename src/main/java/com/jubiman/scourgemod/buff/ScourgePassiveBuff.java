@@ -18,17 +18,20 @@ public abstract class ScourgePassiveBuff extends Buff {
 
 	@Override
 	public void init(ActiveBuff activeBuff, BuffEventSubscriber buffEventSubscriber) {
-		tick(activeBuff);
+//		tick(activeBuff);
 	}
 
 	@Override
 	public void serverTick(ActiveBuff buff) {
-		tick(buff);
+		if (buff.owner.isPlayer) {
+			PlayerMob owner = (PlayerMob) buff.owner;
+			buffs(buff, ScourgePlayersHandler.getPlayer(owner.getServerClient().authentication));
+		}
 	}
 
 	@Override
 	public void clientTick(ActiveBuff buff) {
-		tick(buff);
+		// TODO: is this needed?
 	}
 
 	protected void tick(ActiveBuff buff) {

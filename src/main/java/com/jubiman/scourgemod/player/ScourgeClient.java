@@ -4,6 +4,7 @@ import com.jubiman.customdatalib.client.CustomClient;
 import com.jubiman.scourgemod.player.level.LevelBase;
 import com.jubiman.scourgemod.player.stat.*;
 import necesse.engine.network.client.Client;
+import org.jetbrains.annotations.NotNull;
 
 public class ScourgeClient extends CustomClient {
 	public final LevelBase level;
@@ -117,5 +118,26 @@ public class ScourgeClient extends CustomClient {
 				return charisma;
 		}
 		return null;
+	}
+
+	public int getStatFromBuffID(@NotNull String stringID) {
+		switch (stringID) {
+			case "scourge_vitality": {
+				return vitality.getLevel();
+			}
+			case "scourge_dexterity": {
+				return dexterity.getTotalLevel();
+			}
+			case "scourge_intelligence": {
+				return intelligence.getTotalLevel();
+			}
+			case "scourge_strength": {
+				return strength.getTotalLevel();
+			}
+			case "scourge_charisma": {
+				return charisma.getTotalLevel();
+			}
+		}
+		return -1; // shouldn't happen
 	}
 }
