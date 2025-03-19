@@ -19,6 +19,6 @@ public class VitalityBuff extends StatBuff {
 
 	private void buffs(ActiveBuff buff, Vitality vitality) {
 		buff.setModifier(BuffModifiers.MAX_HEALTH, vitality.getVitalityHPBoost());
-		buff.setModifier(BuffModifiers.ARMOR, vitality.getVitalityArmorBoost());
+		buff.setModifier(BuffModifiers.ARMOR_FLAT, vitality.getVitalityArmorBoost());
 	}
 }
