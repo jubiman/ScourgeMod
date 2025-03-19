@@ -16,22 +16,30 @@ public class Dexterity extends Stat {
 	}
 
 	public float getDexterityMSBoost() {
-		return (float) Math.min(Math.max(0, (0.01 * getTotalLevel() * (getTotalLevel() - 1))), 1.5f);
+		return 0.005f * (getTotalLevel() - 1);
 	}
 
 	public float getDexterityAMSBoost() {
-		return (float) (1 - (0.005 * getTotalLevel() * (getTotalLevel() - 1)));
+		return 1 - (0.001f * (getTotalLevel() - 1));
 	}
 
 	public float getDexteritySCBoost() {
-		return  (float) (0.001 * getTotalLevel() * (getTotalLevel() - 1));
+		return 0.005f * (getTotalLevel() - 1);
 	}
 
 	public float getDexterityCCBoost() {
-		return (float) (0.005 * getTotalLevel() * (getTotalLevel() - 1));
+		return 0.02f * (getTotalLevel() - 1);
+	}
+
+	public float getDexterityCDBoost() {
+		return 0.005f * (getTotalLevel() - 1);
 	}
 
 	public float getDexterityRDBoost() {
-		return (float) (0.003 * getTotalLevel() * (getTotalLevel() - 1));
+		return 0.01f * (getTotalLevel() - 1);
+	}
+
+	public float getDexterityASBoost() {
+		return 0.005f * (getTotalLevel() - 1);
 	}
 }

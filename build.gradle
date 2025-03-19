@@ -7,7 +7,7 @@ plugins {
 
 project.ext.modID = "com.jubiman.scourgemod" // The unique id of your mod. Must be all lowercase and cannot use special characters.
 project.ext.modName = "ScourgeMod" // The display name of your mod.
-project.ext.modVersion = "1.0" // Your current builds version. Must follow the xx.xx... format.
+project.ext.modVersion = "0.0.1" // Your current builds version. Must follow the xx.xx... format.
 project.ext.gameVersion = "0.31.1" // The target game version.
 project.ext.modDescription = "A mod expanding upon the normal Necesse gameplay, adding bosses and more content" // Short description of what your mod is.
 project.ext.author = "Jubiman" // Your name

@@ -15,30 +15,30 @@ public class Charisma extends Stat {
 	}
 
 	public float getCharismaTRBoost() {
-		return (float) Math.min((0.0001 * getTotalLevel() * (getTotalLevel() - 1)), 0.33);
+		return (float) Math.min((0.005 * (getTotalLevel() - 1)), 0.33);
 	}
 
 	public float getCharismaSDBoost() {
-		return (float) (0.001 * getTotalLevel() * getTotalLevel());
+		return 0.01f * (getTotalLevel() - 1);
 	}
 
 	public float getCharismaSASBoost() {
-		return (float) (0.001 * getTotalLevel() * getTotalLevel());
+		return 0.001f * (getTotalLevel() - 1);
 	}
 
 	public float getCharismaSCCBoost() {
-		return (float) (0.0005 * getTotalLevel() * getTotalLevel());
+		return 0.005f * (getTotalLevel() - 1);
 	}
 
 	public float getCharismaSCDBoost() {
-		return (float) (0.001 * getTotalLevel() * getTotalLevel());
+		return 0.05f * (getTotalLevel() - 1);
 	}
 
 	public int getCharismaMSBoost() {
-		return getTotalLevel() / 25;
+		return Math.max(getTotalLevel() / 25, 0);
 	}
 
 	public float getCharismaSSBoost() {
-		return (float) (0.0001 * getTotalLevel() * getTotalLevel());
+		return (float) (0.005 * (getTotalLevel() - 1));
 	}
 }

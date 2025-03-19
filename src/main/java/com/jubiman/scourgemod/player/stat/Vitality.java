@@ -15,10 +15,10 @@ public class Vitality extends Stat {
 	}
 
 	public float getVitalityHPBoost() {
-		return (float) (0.01 * getTotalLevel() * (getTotalLevel() - 1));
+		return (float) (0.1 * (getTotalLevel() - 1));
 	}
 
 	public float getVitalityArmorBoost() {
-		return (float) (0.005 * getTotalLevel() * (getTotalLevel() - 1));
+		return (float) (0.5 * (getTotalLevel() - 1));
 	}
 }

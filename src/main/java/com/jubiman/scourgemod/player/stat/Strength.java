@@ -16,14 +16,14 @@ public class Strength extends Stat {
 	}
 
 	public int getStrengthAPBoost() {
-		return (int) (0.1 * getTotalLevel() * (getTotalLevel() - 1));
+		return (int) (0.01 * (getTotalLevel() - 1));
 	}
 
 	public float getStrengthDMGBoost() {
-		return (float) (0.001 * getTotalLevel() * (getTotalLevel() - 1));
+		return 0.01f * (getTotalLevel() - 1);
 	}
 
 	public float getStrengthKBRBoost() {
-		return (float) -(0.001 * getTotalLevel() * (getTotalLevel() - 1));
+		return 1 - (0.001f * (getTotalLevel() - 1));
 	}
 }
