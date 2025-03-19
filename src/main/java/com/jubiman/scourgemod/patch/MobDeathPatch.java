@@ -7,6 +7,8 @@ import necesse.engine.modLoader.annotations.ModMethodPatch;
 import necesse.entity.mobs.Attacker;
 import necesse.entity.mobs.Mob;
 import necesse.entity.mobs.PlayerMob;
+import necesse.entity.mobs.friendly.critters.CritterMob;
+import necesse.entity.mobs.friendly.human.HumanMob;
 import net.bytebuddy.asm.Advice;
 
 import java.util.HashSet;
@@ -14,13 +16,8 @@ import java.util.HashSet;
 @ModMethodPatch(target = Mob.class, name = "onDeath", arguments = {Attacker.class, HashSet.class})
 public class MobDeathPatch {
 	@Advice.OnMethodExit
-	static void onExit(@Advice.This Mob mob, @Advice.Argument(0) Attacker attacker, @Advice.Argument(1) HashSet<Attacker> attackers) {
-		HashSet<Attacker> atks = new HashSet<>(attackers);
-		if (attacker != null) {
-			atks.clear();
-			atks.add(attacker);
-		}
-		for (Attacker a : atks) {
+	static void onExit(@Advice.This Mob mob, @Advice.Argument(1) HashSet<Attacker> attackers) {
+		for (Attacker a : attackers) {
 			if (a.getAttackOwner() instanceof PlayerMob) {
 				PlayerMob playerMob = (PlayerMob) a.getAttackOwner();
 				ScourgePlayer player;
@@ -28,13 +25,13 @@ public class MobDeathPatch {
 					return;
 
 				player = ScourgePlayersHandler.getPlayer(playerMob.getServerClient().authentication);
-				int exp = 0;
+				int exp;
 				if (mob instanceof ScourgeMob)
 					exp = ((ScourgeMob) mob).getExpGain();
 				else { // Necesse mobs
 					switch (mob.getStringID()) {
 						case "ancientarmoredskeleton": {
-							exp = 700;
+							exp = 1300;
 							break;
 						}
 						case "ancientskeleton":
@@ -42,11 +39,11 @@ public class MobDeathPatch {
 						case "enchantedzombiearcher":
 						case "mummymage":
 						case "voidwizard": {
-							exp = 500;
+							exp = 1000;
 							break;
 						}
 						case "ancientskeletonmage": {
-							exp = 600;
+							exp = 1100;
 							break;
 						}
 						case "blackcavespider":
@@ -63,7 +60,8 @@ public class MobDeathPatch {
 							exp = 10;
 							break;
 						}
-						case "crawlingzombie": {
+						case "crawlingzombie":
+						case "golbin": {
 							exp = 5;
 							break;
 						}
@@ -77,12 +75,12 @@ public class MobDeathPatch {
 						}
 						case "deepcavespirit":
 						case "evilsprotector": {
-							exp = 100;
+							exp = 300;
 							break;
 						}
 						case "desertcrawler":
 						case "piraterecruit": {
-							exp = 150;
+							exp = 250;
 							break;
 						}
 						case "frostsentry":
@@ -90,11 +88,7 @@ public class MobDeathPatch {
 						case "sandspirit":
 						case "snowwolf":
 						case "swampzombie": {
-							exp = 50;
-							break;
-						}
-						case "golbin": {
-							exp = 4;
+							exp = 100;
 							break;
 						}
 						case "ninja":
@@ -105,7 +99,7 @@ public class MobDeathPatch {
 						case "skeleton":
 						case "skeletonminer":
 						case "skeletonthrower": {
-							exp = 44;
+							exp = 50;
 							break;
 						}
 						case "swampshooter":
@@ -118,7 +112,7 @@ public class MobDeathPatch {
 							break;
 						}
 						case "queenspider": {
-							exp = 250;
+							exp = 500;
 							break;
 						}
 						case "swampguardian": {
@@ -126,7 +120,7 @@ public class MobDeathPatch {
 							break;
 						}
 						case "ancientvulture": {
-							exp = 1000;
+							exp = 1500;
 							break;
 						}
 						case "piratecaptain": {
@@ -153,6 +147,15 @@ public class MobDeathPatch {
 						case "fallenwizard": {
 							exp = 11111;
 							break;
+						}
+						default: {
+							if (mob instanceof CritterMob) {
+								exp = 1;
+							} else if (mob instanceof HumanMob) {
+								exp = 1000;
+							} else {
+								exp = mob.getMaxHealth() / 10; // 10% of mob's max health
+							}
 						}
 					}
 				}
