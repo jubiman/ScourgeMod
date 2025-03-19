@@ -1,6 +1,7 @@
 package com.jubiman.scourgemod.buff.playerclass.warrior;
 
 import com.jubiman.scourgemod.buff.ScourgePassiveBuff;
+import com.jubiman.scourgemod.player.ScourgeClient;
 import com.jubiman.scourgemod.player.ScourgePlayer;
 import com.jubiman.scourgemod.player.playerclass.warrior.WarriorClass;
 import necesse.entity.mobs.buffs.ActiveBuff;
@@ -17,5 +18,10 @@ public class WarriorBuff extends ScourgePassiveBuff {
 		buff.setModifier(BuffModifiers.MAGIC_DAMAGE, warriorClass.getOtherDamageTypesDebuff());
 		buff.setModifier(BuffModifiers.SUMMON_DAMAGE, warriorClass.getOtherDamageTypesDebuff());
 		buff.setModifier(BuffModifiers.RANGED_DAMAGE, warriorClass.getOtherDamageTypesDebuff());
+	}
+
+	@Override
+	protected void buffs(ActiveBuff buff, ScourgeClient player) {
+
 	}
 }

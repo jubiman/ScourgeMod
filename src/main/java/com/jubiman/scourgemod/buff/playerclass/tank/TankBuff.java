@@ -1,6 +1,7 @@
 package com.jubiman.scourgemod.buff.playerclass.tank;
 
 import com.jubiman.scourgemod.buff.ScourgePassiveBuff;
+import com.jubiman.scourgemod.player.ScourgeClient;
 import com.jubiman.scourgemod.player.ScourgePlayer;
 import com.jubiman.scourgemod.player.playerclass.tank.TankClass;
 import necesse.entity.mobs.buffs.ActiveBuff;
@@ -15,5 +16,10 @@ public class TankBuff extends ScourgePassiveBuff {
 		buff.setModifier(BuffModifiers.ARMOR, tankClass.getArmorBuff());
 		buff.setModifier(BuffModifiers.KNOCKBACK_INCOMING_MOD, tankClass.getKBIncBuff());
 		buff.setModifier(BuffModifiers.SPEED, tankClass.getMovementSpeedDebuff());
+	}
+
+	@Override
+	protected void buffs(ActiveBuff buff, ScourgeClient player) {
+
 	}
 }

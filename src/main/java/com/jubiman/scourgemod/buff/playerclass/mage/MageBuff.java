@@ -2,6 +2,7 @@ package com.jubiman.scourgemod.buff.playerclass.mage;
 
 import com.jubiman.scourgemod.buff.ScourgePassiveBuff;
 import com.jubiman.scourgemod.modifier.ScourgeBuffModifiers;
+import com.jubiman.scourgemod.player.ScourgeClient;
 import com.jubiman.scourgemod.player.ScourgePlayer;
 import com.jubiman.scourgemod.player.playerclass.mage.MageClass;
 import necesse.entity.mobs.buffs.ActiveBuff;
@@ -28,5 +29,10 @@ public class MageBuff extends ScourgePassiveBuff {
 		buff.setModifier(BuffModifiers.RANGED_DAMAGE, mageClass.getOtherDamageTypesDebuff());
 		buff.setModifier(BuffModifiers.SUMMON_DAMAGE, mageClass.getOtherDamageTypesDebuff());
 		buff.setModifier(BuffModifiers.MELEE_DAMAGE, mageClass.getOtherDamageTypesDebuff());
+	}
+
+	@Override
+	protected void buffs(ActiveBuff buff, ScourgeClient player) {
+
 	}
 }
