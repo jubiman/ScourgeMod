@@ -9,6 +9,7 @@ import necesse.entity.mobs.Mob;
 import necesse.entity.mobs.PlayerMob;
 import necesse.entity.mobs.friendly.critters.CritterMob;
 import necesse.entity.mobs.friendly.human.HumanMob;
+import necesse.entity.mobs.hostile.bosses.BossMob;
 import net.bytebuddy.asm.Advice;
 
 import java.util.HashSet;
@@ -35,9 +36,8 @@ public class MobDeathPatch {
 					case "ancientskeleton":
 					case "ancientskeletonthrower":
 					case "enchantedzombiearcher":
-					case "mummymage":
 					case "voidwizard": {
-						exp = 1000;
+						exp = 700;
 						break;
 					}
 					case "ancientskeletonmage": {
@@ -66,9 +66,13 @@ public class MobDeathPatch {
 					case "cryoflake":
 					case "giantcavespider":
 					case "mummy":
+					case "mummymage":
 					case "jackal":
-					case "vampire": {
-						exp = 15;
+					case "vampire":
+					case "skeleton":
+					case "skeletonminer":
+					case "skeletonthrower": {
+						exp = 50;
 						break;
 					}
 					case "deepcavespirit":
@@ -92,12 +96,6 @@ public class MobDeathPatch {
 					case "ninja":
 					case "swampcavespider": {
 						exp = 200;
-						break;
-					}
-					case "skeleton":
-					case "skeletonminer":
-					case "skeletonthrower": {
-						exp = 50;
 						break;
 					}
 					case "swampshooter":
@@ -150,10 +148,10 @@ public class MobDeathPatch {
 						if (mob instanceof CritterMob) {
 							exp = 1;
 						} else if (mob instanceof HumanMob) {
-							exp = 1000;
-						} else {
+							exp = 500;
+						} else if (mob instanceof BossMob) {
 							exp = mob.getMaxHealth() / 10; // 10% of mob's max health
-						}
+						} else exp = mob.getMaxHealth();
 						break;
 					}
 				}

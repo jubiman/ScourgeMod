@@ -31,7 +31,7 @@ public class Charisma extends Stat {
 	}
 
 	public float getCharismaSCDBoost() {
-		return 0.05f * (getTotalLevel() - 1);
+		return 0.01f * (getTotalLevel() - 1);
 	}
 
 	public int getCharismaMSBoost() {

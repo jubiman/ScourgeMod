@@ -44,7 +44,7 @@ public class LevelBase {
 	}
 
 	public int getLevel() {
-		return (int) Math.floor(Math.pow(exp / 50d, 1/1.9));
+		return (int) Math.floor(Math.pow(exp / 50d, 1/2.3));
 	}
 
 	public long getExp() {
@@ -58,7 +58,7 @@ public class LevelBase {
 	public long nextThreshold(int level) {
 		// TODO: decide whether to use this formula or a different one
 		// http://howtomakeanrpg.com/a/how-to-make-an-rpg-levels.html
-		return Math.round(50 * Math.pow(level + 1, 1.9));
+		return Math.round(50 * Math.pow(level + 1, 2.3));
 	}
 
 	public long previousThreshold() {

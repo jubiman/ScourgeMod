@@ -148,11 +148,10 @@ public class ScourgeMod {
 		Recipes.registerModRecipe(new Recipe(
 				"scourge_essence_of_rebirth",
 				1,
-				RecipeTechRegistry.FALLEN_ALCHEMY,
+				RecipeTechRegistry.ALCHEMY,
 				new Ingredient[]{
 						new Ingredient("alchemyshard", 16),
 						new Ingredient("voidshard", 16),
-						new Ingredient("upgradeshard", 16),
 				}
 		));
 
