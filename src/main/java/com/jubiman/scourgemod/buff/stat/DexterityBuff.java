@@ -23,7 +23,9 @@ public class DexterityBuff extends StatBuff {
 		buff.setModifier(BuffModifiers.STAMINA_CAPACITY, dexterity.getDexteritySCBoost());
 		buff.setModifier(BuffModifiers.CRIT_CHANCE, dexterity.getDexterityCCBoost());
 		buff.setModifier(BuffModifiers.CRIT_DAMAGE, dexterity.getDexterityCDBoost());
-		buff.setModifier(BuffModifiers.RANGED_DAMAGE, dexterity.getDexterityRDBoost());
+
 		buff.setModifier(BuffModifiers.ATTACK_SPEED, dexterity.getDexterityASBoost());
+		buff.setModifier(BuffModifiers.SUMMON_ATTACK_SPEED, dexterity.getDexteritySASBoost());
+
 	}
 }

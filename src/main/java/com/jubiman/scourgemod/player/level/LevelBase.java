@@ -51,7 +51,7 @@ public class LevelBase {
 		return exp;
 	}
 
-	private long nextThreshold() {
+	public long nextThreshold() {
 		return nextThreshold(getLevel());
 	}
 

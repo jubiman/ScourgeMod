@@ -20,6 +20,7 @@ public class StrengthBuff extends StatBuff {
 	private void buffs(ActiveBuff buff, Strength strength) {
 		buff.setModifier(BuffModifiers.ARMOR_PEN_FLAT, strength.getStrengthAPBoost());
 		buff.setModifier(BuffModifiers.MELEE_DAMAGE, strength.getStrengthDMGBoost());
+		buff.setModifier(BuffModifiers.RANGED_DAMAGE, strength.getStrengthRDBoost());
 		buff.setModifier(BuffModifiers.KNOCKBACK_INCOMING_MOD, strength.getStrengthKBRBoost());
 	}
 

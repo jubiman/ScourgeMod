@@ -19,6 +19,7 @@ public class IntelligenceBuff extends StatBuff {
 
 	private void buffs(ActiveBuff buff, Intelligence intelligence) {
 		buff.setModifier(BuffModifiers.MAGIC_DAMAGE, intelligence.getIntelligenceMDBoost());
+		buff.setModifier(BuffModifiers.SUMMON_DAMAGE, intelligence.getIntelligenceSDBoost());
 		buff.setModifier(BuffModifiers.MAGIC_ATTACK_SPEED, intelligence.getIntelligenceMASBoost());
 		buff.setModifier(BuffModifiers.MAX_MANA, intelligence.getIntelligenceMMBoost());
 	}

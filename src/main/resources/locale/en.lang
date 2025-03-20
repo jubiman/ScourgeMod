@@ -75,8 +75,8 @@ scourge_charisma=Charisma
 
 [ui]
 vitality_tip=Increases maximum health and health regeneration
-strength_tip=Increases physical and ranged damage
-dexterity_tip=Increases critical chance and damage, movement speed and attack speed
+strength_tip=Increases physical damage and armor penetration
+dexterity_tip=Increases critical chance and damage, ranged damage, movement speed and attack speed
 intelligence_tip=Increases magic damage, maximum mana and mana regeneration
 charisma_tip=Decreases prices in shops and increase summon related stats.
 statpoints_tip=Skill points are used to level up stats and skills

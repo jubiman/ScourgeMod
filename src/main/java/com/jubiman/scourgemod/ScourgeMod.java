@@ -115,9 +115,10 @@ public class ScourgeMod {
 		PacketRegistry.registerPacket(PacketSyncStats.class);
 		PacketRegistry.registerPacket(PacketSyncStat.class);
 		PacketRegistry.registerPacket(PacketSyncScourgePlayer.class);
+		PacketRegistry.registerPacket(PacketResyncStats.class);
 
 		// Register all packets in the network.packet package and any subpackages
-
+		// TODO
 
 		// Register players handler
 		CustomPlayerRegistry.registerClass(ScourgePlayersHandler.name, ScourgePlayersHandler.class);
@@ -148,9 +149,9 @@ public class ScourgeMod {
 		Recipes.registerModRecipe(new Recipe(
 				"scourge_essence_of_rebirth",
 				1,
-				RecipeTechRegistry.ALCHEMY,
+				RecipeTechRegistry.VOID_ALCHEMY,
 				new Ingredient[]{
-						new Ingredient("alchemyshard", 16),
+						new Ingredient("lifequartz", 16),
 						new Ingredient("voidshard", 16),
 				}
 		));

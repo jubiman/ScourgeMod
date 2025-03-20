@@ -67,6 +67,7 @@ public class ScourgeStatCommand extends ModularChatCommand {
 				serverClient.sendPacket(new PacketSyncLevel(player));
 				return;
 			}
+			case "xp":
 			case "exp":
 			case "experience": {
 				experience(player, (String) args[1], (int) args[3], commandLog);
@@ -190,21 +191,22 @@ public class ScourgeStatCommand extends ModularChatCommand {
 		boolean leveledUp = false;
 		switch (option.toLowerCase()) {
 			case "set":
-				leveledUp = level.setExp(level.nextThreshold(value-1));
+				leveledUp = level.setExp(level.nextThreshold(value-1) + 1);
 				break;
 			case "add":
-				leveledUp = level.setExp(level.nextThreshold(level.getLevel()-1 + value));
+				leveledUp = level.setExp(level.nextThreshold(level.getLevel()-1 + value) + 1);
 				break;
 			case "remove":
-				leveledUp = level.setExp(level.nextThreshold(level.getLevel()-1 - value));
+				leveledUp = level.setExp(level.nextThreshold(level.getLevel()-1 - value) + 1);
 				break;
 			case "get":
 				commandLog.add("Exp: " + level.getExp() + ", which is level " + level.getLevel());
 				return;
 		}
+		level.setThreshold(level.nextThreshold());
+		player.calcStatPoints();
 		if (leveledUp) {
 			commandLog.add("Player leveled up to level " + level.getLevel());
-			player.calcStatPoints();
 		}
 		commandLog.add("Player exp set to " + level.getExp() + ", which is level " + level.getLevel());
 	}
@@ -226,9 +228,10 @@ public class ScourgeStatCommand extends ModularChatCommand {
 				commandLog.add("Exp: " + level.getExp() + ", which is level " + level.getLevel());
 				return;
 		}
+		level.setThreshold(level.nextThreshold(level.getLevel() + 1));
+		player.calcStatPoints();
 		if (leveledUp) {
 			commandLog.add("Player leveled up to level " + level.getLevel());
-			player.calcStatPoints();
 		}
 		commandLog.add("Player exp set to " + level.getExp() + ", which is level " + level.getLevel());
 	}

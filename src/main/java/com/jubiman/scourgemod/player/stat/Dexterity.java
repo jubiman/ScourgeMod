@@ -32,14 +32,14 @@ public class Dexterity extends Stat {
 	}
 
 	public float getDexterityCDBoost() {
-		return 0.05f * (getTotalLevel() - 1);
-	}
-
-	public float getDexterityRDBoost() {
-		return 0.01f * (getTotalLevel() - 1);
+		return 0.02f * (getTotalLevel() - 1);
 	}
 
 	public float getDexterityASBoost() {
 		return 0.005f * (getTotalLevel() - 1);
+	}
+
+	public float getDexteritySASBoost() {
+		return 0.001f * (getTotalLevel() - 1);
 	}
 }

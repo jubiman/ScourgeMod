@@ -26,4 +26,8 @@ public class Strength extends Stat {
 	public float getStrengthKBRBoost() {
 		return 1 - (0.001f * (getTotalLevel() - 1));
 	}
+
+	public float getStrengthRDBoost() {
+		return 0.01f * (getTotalLevel() - 1);
+	}
 }

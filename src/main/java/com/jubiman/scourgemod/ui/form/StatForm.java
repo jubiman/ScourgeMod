@@ -1,5 +1,6 @@
 package com.jubiman.scourgemod.ui.form;
 
+import com.jubiman.scourgemod.network.packet.PacketResyncStats;
 import com.jubiman.scourgemod.network.packet.PacketSyncStats;
 import com.jubiman.scourgemod.player.ScourgeClient;
 import com.jubiman.scourgemod.player.ScourgePlayersHandler;
@@ -15,7 +16,6 @@ import necesse.engine.window.GameWindow;
 import necesse.engine.window.WindowManager;
 import necesse.entity.mobs.PlayerMob;
 import necesse.gfx.forms.Form;
-import necesse.gfx.forms.MainGameFormManager;
 import necesse.gfx.forms.components.FormTextButton;
 
 public class StatForm extends Form {
@@ -161,6 +161,7 @@ public class StatForm extends Form {
 			if (event.getID() == 256 // KEY_ESCAPE
 				|| event.getID() == Control.INVENTORY.getKey()) {
 				this.setHidden(true);
+				this.client.network.sendPacket(new PacketResyncStats());
 			} else if (event.getID() == 340) { // KEY_SHIFT
 				this.isShiftDown = event.state;
 			}
@@ -183,6 +184,8 @@ public class StatForm extends Form {
 
 	public void open(Client client) {
 		this.client = client;
+		final GameWindow windowManager = WindowManager.getWindow();
+		setPosition(windowManager.getHudWidth() / 2 - getWidth() / 2, windowManager.getHudHeight() / 2 - getHeight() / 2);
 
 		// Set text
 		updateText();

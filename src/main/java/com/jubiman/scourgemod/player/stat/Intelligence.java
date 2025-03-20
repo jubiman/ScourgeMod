@@ -25,4 +25,8 @@ public class Intelligence extends Stat {
 	public float getIntelligenceMMBoost() {
 		return 0.05f * (getTotalLevel() - 1);
 	}
+
+	public float getIntelligenceSDBoost() {
+		return 0.01f * (getTotalLevel() - 1);
+	}
 }
